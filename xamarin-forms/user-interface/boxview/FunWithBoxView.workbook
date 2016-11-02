@@ -1,0 +1,145 @@
+---
+uti: com.xamarin.workbook
+platforms:
+- iOS
+packages:
+- id: Xamarin.Forms
+  version: 2.3.2.127
+---
+
+# Fun with BoxView
+
+In one sense, `BoxView` is the most inconsequential view in all of Xamarin.Forms. It’s only a box of a particular color and size. But \`BoxView\` is more versatile than it first seems, and it’s valuable in Xamarin.Forms because the closest thing in the environment to a vector graphics object.
+
+Prepare to see a lot of `HorizontalOptions` and `VerticalOptions` in this workbook.
+
+TK. a way for you to do rudimentary graphics in a Xamarin.Forms application.
+
+As usual, this Workbook has been prepared for Xamarin.Forms by adding the NuGet package for Xamarin.Forms. The following C# Script file creates references to the Xamarin.Forms assemblies, and performs initialization for iOS.
+
+```csharp
+#load "FormsInit-iOS.csx"
+```
+
+At the conclusion of the C# Script file, a variable named \`page\` is availale of type \`ContentPage\`. A \`Padding\` property has been set to avoid overwriting the iOS status bar.
+
+```csharp
+using System;
+using Xamarin.Forms;
+```
+
+```csharp
+var scrollView = new ScrollView();
+var stackLayout = new StackLayout();
+scrollView.Content = stackLayout;
+page.Content = scrollView;
+```
+
+```csharp
+var boxView1 = new BoxView
+{
+    Color = Color.Accent
+};
+stackLayout.Children.Add(boxView1);
+```
+
+```csharp
+boxView1.HorizontalOptions = LayoutOptions.Center;
+```
+
+It’s also possible to use `BoxView` as a underline for text. Here’s a single-cell `Grid` containing a `Label` with some text:
+
+```csharp
+var label = new Label
+{
+    Text = "Some text",
+    FontSize = 24,
+ //   FontFamily = "Zapfino" // "Snell Roundhand"
+};
+
+var labelGrid = new Grid();
+labelGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+labelGrid.Children.Add(label);
+stackLayout.Children.Add(labelGrid);
+```
+
+This Grid occupies the entire width of the parent StackLayout, and the Label is the same width. Make the Grid the width of the Label and center it in the StackLayout using:
+
+```csharp
+labelGrid.HorizontalOptions = LayoutOptions.Center;
+```
+
+```csharp
+// labelStack.BackgroundColor = Color.Aqua;
+```
+
+```csharp
+labelGrid.Children.Add(new BoxView
+{
+    Color = Color.Black,
+    HeightRequest = 2,
+    VerticalOptions = LayoutOptions.End
+});
+```
+
+```csharp
+var grid1 = new Grid
+{
+    WidthRequest = 100,
+    HeightRequest = 100
+};
+stackLayout.Children.Add(grid1);
+```
+
+```csharp
+BoxView[] sides = new BoxView[4];
+
+for (int i = 0; i < 4; i++)
+{
+    var side = new BoxView
+    {
+        Color = Color.Accent,
+        WidthRequest = i % 2 == 0 ? 3 : -1,
+        HeightRequest = i % 2 == 1 ? 3 : -1
+    }; 
+    grid1.Children.Add(side);    
+    sides[i] = side;
+}
+```
+
+```csharp
+sides[0].HorizontalOptions = LayoutOptions.Start;
+sides[1].VerticalOptions = LayoutOptions.Start;
+sides[2].HorizontalOptions = LayoutOptions.End;
+sides[3].VerticalOptions = LayoutOptions.End;
+```
+
+```csharp
+grid1.HorizontalOptions = LayoutOptions.Center;
+```
+
+```csharp
+var circleStack = new StackLayout
+{
+    Orientation = StackOrientation.Horizontal,
+    Spacing = 0,
+    HeightRequest = 100,
+    HorizontalOptions = LayoutOptions.Center
+};
+stackLayout.Children.Add(circleStack);
+```
+
+```csharp
+for (int i = 0; i < 100; i++)
+{
+    BoxView circleBox = new BoxView
+    {
+        Color = Color.Accent,
+        WidthRequest = 1,
+        HeightRequest = 100 * Math.Sin(Math.Acos((i - 50) / 50.0)),
+        VerticalOptions = LayoutOptions.Center
+    };
+    circleStack.Children.Add(circleBox);
+
+}
+```
