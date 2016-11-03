@@ -1,7 +1,7 @@
 ---
 uti: com.xamarin.workbook
-platform: iOS
-packages: []
+platforms:
+- iOS
 ---
 
 # Exploring SceneKit
@@ -41,7 +41,6 @@ Set the `SCNView.Scene` property to the previously created scene and show some d
 scnView.Scene = scene;
 scnView.AllowsCameraControl = true;
 scnView.ShowsStatistics = true;
-
 ```
 
 As always with iOS, control of the user experience begins with the root `UIViewController`. Xamarin notebooks provides the `RootViewController` global variable (execute `help` in a code block to see the complete list of variables provided by Workbooks).
@@ -59,9 +58,9 @@ true
 
 It may not be apparent that anything has changed, although you should notice the status bar at the bottom of the simulator showing FPS. But you can see that we are, indeed, displaying `scnView` by changing its background color:
 
- ```csharp
+```csharp
 scnView.BackgroundColor = UIColor.Black;
- ```
+```
 
 Our scene graph is empty, so let’s set the stage:
 
@@ -83,7 +82,7 @@ ambientLightNode.Light.Color = UIColor.DarkGray;
 scene.RootNode.AddChildNode (ambientLightNode);
 ```
 
-The above code shows a typical pattern for working with SceneKit. First, you create an `SCNNode`. Second, you set properties of that node such as it's `Light` and `LightType` properties. The `Position` property locates the `SCNNode` in 3D space _relative to its parent node's_ `Position`, `Rotation`, and `Scale` properties. Finally, you add the newly-created `SCNNode` as a child of an existing `SCNNode`. 
+The above code shows a typical pattern for working with SceneKit. First, you create an `SCNNode`. Second, you set properties of that node such as it's `Light` and `LightType` properties. The `Position` property locates the `SCNNode` in 3D space *relative to its parent node's* `Position`, `Rotation`, and `Scale` properties. Finally, you add the newly-created `SCNNode` as a child of an existing `SCNNode`.
 
 ### Camera!
 
@@ -98,7 +97,7 @@ scene.RootNode.AddChildNode (cameraNode);
 
 ### Actors on the set!
 
-At this point, you \*still \* don’t see anything, because you've not added any geometry to the scene graph.
+At this point, you *still* don’t see anything, because you've not added any geometry to the scene graph.
 
 The [SCNGeometry ](https://developer.xamarin.com/api/type/SceneKit.SCNGeometry/) class has a number of sub-classes representing primitive shapes (box, capsule, pyramid, etc.). Or you can programmatically create custom geometry or load it from a DAE file. (See the [Exploring SCNGeometrySource](tk) workbook.)
 
@@ -114,7 +113,7 @@ scene.RootNode.AddChildNode (boxNode);
 
 Finally! Something visible in the Simulator! In the Simulator, you can click and drag to rotate the viewpoint.
 
-(Note that the `Position` property of the `boxNode` was not set, but `SCNVector3` is a value type and defaults to `[0, 0, 0]`, which happens to be what we desire for this step.)
+\(Note that the `Position` property of the `boxNode` was not set, but `SCNVector3` is a value type and defaults to `[0, 0, 0]`, which happens to be what we desire for this step.)
 
 Now, texture the box. First, load a simple texture from the file system:
 

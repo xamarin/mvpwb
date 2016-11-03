@@ -3,7 +3,7 @@ Visualizers
 
 [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/) results visualization examples.
 
-![](Screenshots/ios-mac-sml.png)
+![](Screenshots/ios-mac.png)
 
 These workbooks (one for each platform) demonstrate
 

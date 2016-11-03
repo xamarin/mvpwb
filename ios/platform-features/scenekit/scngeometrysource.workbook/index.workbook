@@ -1,6 +1,8 @@
-```json
-{"exec-mode":"default","platform":"iOS","uti":"com.xamarin.workbook","packages":[]}
-```
+---
+uti: com.xamarin.workbook
+platforms:
+- iOS
+---
 
 # Exploring SCNGeometrySource
 
@@ -9,12 +11,6 @@
 SceneKit’s [SCNGeometry ](https://developer.xamarin.com/api/type/SceneKit.SCNGeometry/)class has several subclasses that represent various primitive shapes (boxes, pyramids, capsules, etc.). Additionally, you can load custom geometry from .DAE files.
 
 Or you can create the geometry programmatically. This is the most complex way to create geometry, but ultimately is the most flexible. This workbook will go through the process of creating and animating a textured right-pyramid (a four-sided pyramid).
-
-To start, define the path to the workbook:
-
-```csharp
-var workbookDir = "/Users/larryobrien/Documents/src/xamarin/workbooks/ios/SceneKit"
-```
 
 ## SceneKit basics...
 
@@ -173,11 +169,11 @@ var tentNode = SCNNode.FromGeometry(geometry);
 scene.RootNode.AddChildNode(tentNode);
 ```
 
-Now to texture the geometry. First, create an `SCNMaterial` (this relies on your having set `workbookDir` at the beginning of this workbook!) :
+Now to texture the geometry. First, create an `SCNMaterial`:
 
 ```csharp
 var material = new SCNMaterial ();
-material.Diffuse.Contents = UIImage.FromFile (System.IO.Path.Combine(workbookDir, "textureX.png"));
+material.Diffuse.Contents = UIImage.FromFile ("textureX.png");
 material.Specular.Contents = UIColor.Gray;
 material.LocksAmbientWithDiffuse = true;
 material.Diffuse.WrapS = SCNWrapMode.Repeat;
@@ -208,7 +204,7 @@ First, define a `struct` that holds both the custom geometry and a reference to 
 public struct Tent {
 	public SCNNode Node { get; }
 	public SCNVector3[] Locations { get; }
-	
+
 	public Tent(SCNNode node, SCNVector3[] locations)
 	{
 		Node = node;
@@ -275,7 +271,7 @@ Tent CreateTent(SCNVector3 a, SCNVector3 c)
 
 	var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource }, new [] { element });
 	var newNode = SCNNode.FromGeometry(geometry);
-	
+
 	var tent = new Tent(newNode, locs);
 	return tent;
 }
@@ -296,13 +292,13 @@ Now that we're back to square one, we want to create a function that allows us t
 Tent Add(Tent original, List<KeyValuePair<int, SCNVector3>> deltas) {
 	//Copy the source vertex locations
 	var locs = original.Locations.Clone() as SCNVector3[];
-	
+
 	//Modify the vertices in the cloned location list
 	foreach(var delta in deltas) {
 		var index = delta.Key;
 		locs[index] += delta.Value;
 	}
-	
+
 	//Replace the original vertex source with the changed source
 	var srcs = original.Node.Geometry.GeometrySources.Clone() as SCNGeometrySource[];
 
@@ -316,18 +312,18 @@ Tent Add(Tent original, List<KeyValuePair<int, SCNVector3>> deltas) {
 		}
 	}
 	//ASSERT vertexSourceIndex > -1
-	
+
 	//Create a new geometry source, whose SCNGeometrySource for vertices is for the modified locations
 	var src = SCNGeometrySource.FromVertices(locs);
 	srcs[vertexSourceIndex] = src;
-	
+
 	//Create new geometry
 	var newGeo = SCNGeometry.Create(srcs, original.Node.Geometry.GeometryElements);
 	newGeo.Materials = original.Node.Geometry.Materials;
-	
-	//Create new node 
+
+	//Create new node
 	var node = SCNNode.FromGeometry(newGeo);
-	
+
 	//Return new node and new locations
 	return new Tent(node, locs);
 }
@@ -345,18 +341,17 @@ t2.Node.Position += new SCNVector3(2, 0, 0);
 scene.RootNode.AddChildNode(t2.Node);
 ```
 
-If you look at the Simulator, you can now see the two geometries side-by-side. 
+If you look at the Simulator, you can now see the two geometries side-by-side.
 
 After you’re done, remove the new node from the scene:
 
 ```csharp
-
 t2.Node.RemoveFromParentNode();
 ```
 
 ## Creating the animation
 
-Now it’s time to create the animation, using the `SCNMorpher `class. The SCNMorpher has 1 or more “target” geometries. In this case, we only have the one target geometry, that of  our modified “tent”:
+Now it’s time to create the animation, using the `SCNMorpher`class. The SCNMorpher has 1 or more “target” geometries. In this case, we only have the one target geometry, that of  our modified “tent”:
 
 ```csharp
 using CoreAnimation;
@@ -368,7 +363,7 @@ var morpher = new SCNMorpher();
 morpher.Targets = new [] { newTent };
 ```
 
-The `SCNMorpher` sets the (compatible) geometry of the current node into the geometry of its `Targets` based on the percentage value of  `morpher.weights` at the index of the target. In other words, if there’s only one `SCNGeometry `in `Targets`, a `morpher.weights\[0\]` of `0` is a geometry whose values are taken entirely from the initial node geometry, while a `morpher.weights\[0\]` of `1.0` takes its values entirely from the geometry at `Targets\[0\]`.
+The `SCNMorpher` sets the (compatible) geometry of the current node into the geometry of its `Targets` based on the percentage value of  `morpher.weights` at the index of the target. In other words, if there’s only one `SCNGeometry`in `Targets`, a `morpher.weights\[0\]` of `0` is a geometry whose values are taken entirely from the initial node geometry, while a `morpher.weights\[0\]` of `1.0` takes its values entirely from the geometry at `Targets\[0\]`.
 
 A keypath animation of the morpher.weights values cycles smoothly between geometries:
 
