@@ -36,7 +36,7 @@ tableView.AddColumn (new NSTableColumn ("Data"));
 
 ## Adding the Clip View
 
-`NSTableView` expects to be hosted inside an `NSClipView`.** **The following code creates the required Clip View and adds the Table View to it**:**
+`NSTableView` expects to be hosted inside an `NSClipView`.The following code creates the required Clip View and adds the Table View to it:
 
 ```csharp
 // Create the required clipping view and set it to
