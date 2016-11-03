@@ -1,28 +1,23 @@
-```json
-{"exec-mode":"default","platform":"iOS","uti":"com.xamarin.workbook","packages":[{"id":"Newtonsoft.Json","version":"8.0.3"},{"id":"Microsoft.Net.Http","version":"2.2.29"},{"id":"Microsoft.ProjectOxford.Emotion","version":"1.0.251"},{"id":"Microsoft.Azure.Mobile.Client","version":"2.0.1"},{"id":"Microsoft.ProjectOxford.Common","version":"1.0.250"},{"id":"Microsoft.Bcl","version":"1.1.10"}]}
-```
+---
+uti: com.xamarin.workbook
+platforms:
+- iOS
+packages:
+- id: Newtonsoft.Json
+  version: 8.0.3
+---
 
-# Azure App Service
+# Azure Cognitive Services
 
-* `AzureMobileClient` with Easy Tables
+Imaage analysis with the Cognitive Services' `EmotionServiceClient`
 
-* Analysis with the Cognitive Services' `EmotionServiceClient`
-
-We’ve started by adding the `Microsoft.Azure.Mobile.Client` and `Microsoft.ProjectOxford.Emotion` NuGets to the iOS Workbook. The references are loaded into the workbook.
+We’ve started by adding the `Microsoft.ProjectOxford.Emotion` NuGet to the iOS Workbook. The references are loaded into the workbook.
 
 ```csharp
 #r "System.Collections"
-#r "System.IO"
-#r "System.Runtime"
-#r "System.Threading.Tasks"
-#r "System.Net.Http"
-#r "System.Net.Http.Primitives"
-#r "System.Net.Http.Extensions"
 #r "Newtonsoft.Json"
-#r "Microsoft.WindowsAzure.Mobile"
-#r "Microsoft.WindowsAzure.Mobile.Ext"
-#r "Microsoft.ProjectOxford.Common"
-#r "Microsoft.ProjectOxford.Emotion"
+//#r "Microsoft.ProjectOxford.Common"
+//#r "Microsoft.ProjectOxford.Emotion"
 ```
 
 We first define a simple data structure to model an employee. Remote properties will be populated from Azure. We define a couple of local properties as well that we’ll need later.
@@ -30,38 +25,41 @@ We first define a simple data structure to model an employee. Remote properties 
 ```csharp
 using Newtonsoft.Json;
 
-public class Employee
+public class Acquaintance
 {
-	// remote properties
-	public Guid id { get; set; }
-	public string avatarUrl { get; set; }
-	public string firstName { get; set; }
-	public string lastName { get; set; }
-	
+	public string FirstName { get; set; }
+	public string LastName { get; set; }
+	public string Company { get; set; }
+	public string JobTitle { get; set; }
+	public string Email { get; set; }
+	public string Phone { get; set; }
+	public string Street { get; set; }
+	public string City{ get; set; }
+	public string PostalCode { get; set; }
+	public string State { get; set; }
+	public string PhotoUrl { get; set; }
+	public override string ToString () {
+		return $"{FirstName} {LastName} ({JobTitle}) " + (AvatarImage == null?"⚪️":"☑️");
+	}
 	// client-local properties
 	[JsonIgnore] public float Happiness { get; set; }
 	[JsonIgnore] public UIImage AvatarImage { get; set; }
 }
 ```
 
-With Azure Easy Tables, reading data is a snap:
+The list is populated from another sample’s [seed data](https://github.com/xamarinhq/app-acquaint/blob/2ca9e83c8344d35288e4ea7868ea6e5795a25e9c/App/Common/Acquaint.Data/SeedData.cs).
 
 ```csharp
-using Microsoft.WindowsAzure.MobileServices;
+#load "index.csx"
 
-var mobileService = new MobileServiceClient ("http://evolvedemo.azurewebsites.net");
-var table = mobileService.GetTable<Employee> ();
-
-static List<Employee> employees;
-
-employees = await table.Take (20).ToListAsync ();
+var employees = SeedData.Get();
 ```
 
-Here we fetch the avatar images for each employee and cache them back on the model object. Inspecting the `employees` list now shows happy faces!
+Here we fetch the avatar images for each person and cache them back on the model object. Inspecting the `employees` list now shows happy faces!
 
 ```csharp
 foreach (var employee in employees) {
-	var imageData = NSData.FromUrl (new NSUrl (employee.avatarUrl));
+	var imageData = NSData.FromUrl (new NSUrl (employee.PhotoUrl));
 	if (imageData != null)
 		employee.AvatarImage = UIImage.LoadFromData (imageData);
 }
@@ -71,7 +69,7 @@ employees
 
 ## Cognitive Services
 
-For some real fun, let’s see if we can analyze employee emotions using the Emotions API from [Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services). We have provided our API key in the *emotion.key* file.
+For some real fun, we can analyze employee emotions using the Emotions API from [Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services). We have provided our API key in the *emotion.key* file.
 
 ```csharp
 using System.IO;
@@ -130,7 +128,7 @@ class EmployeeTableSource : UITableViewDataSource
 		} else {
 			emoji = "😡";
 		}
-		
+
 		return new UITableViewCell (UITableViewCellStyle.Subtitle, "MyTableCell") {
 			TextLabel  = { Text = $"{employee.firstName} {employee.lastName}" },
 			DetailTextLabel = { Text = $"{employee.Happiness:P} {emoji}" },
@@ -147,6 +145,7 @@ KeyWindow.RootViewController = new UINavigationController (new UITableViewContro
 })
 ```
 
+----
 ### Exercises
 
 * Change the background color of the `UITableViewCell` based on the happiness of the employee.
@@ -154,3 +153,4 @@ KeyWindow.RootViewController = new UINavigationController (new UITableViewContro
 * The Emotions API covers more than just happiness. Try adding information about anger, available in `emotionData`.
 
 * Implement a custom `UITableViewCell` that shows all emotion data.
+----

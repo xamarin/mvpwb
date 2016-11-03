@@ -1,12 +1,19 @@
-```json
-{"exec-mode":"default","platform":"iOS","uti":"com.xamarin.workbook","packages":[{"id":"Accord","targetFramework":null,"version":"3.0.2"},{"id":"SkiaSharp","targetFramework":null,"version":"1.49.1"}]}
-```
+---
+uti: com.xamarin.workbook
+platforms:
+- iOS
+packages:
+- id: SkiaSharp
+  version: 1.49.1
+- id: Accord
+  version: 3.0.2
+---
 
 # Exploring SkiaSharp
 
 SkiaSharp provides a powerful C# API for doing 2D graphics. It is powered by [Google’s Skia library](http://skia.org/), the same library that powers Google Chrome, Firefox and Android’s graphic stacks.
 
-![](/Users/larryobrien/Documents/src/xamarin_mine/InspectorNotebooks/SkiaSharp/ide-sml.png)
+![](ide-sml.png)
 
 SkiaSharp is a Portable Library, and ships conveniently as a [cross-platform NuGet package](https://www.nuget.org/packages/SkiaSharp), and supports the following platforms out of the box: MacOS X, Android and iOS with Mono and the Windows Desktop with .NET.
 
@@ -50,7 +57,7 @@ The `SKCanvas` uses a drawing model similar in spirit to other drawing models th
 This code is based on [http://math.stackexchange.com/questions/179000/b%C3%A9zier-approximation-of-archimedes-spiral](http://math.stackexchange.com/questions/179000/b%C3%A9zier-approximation-of-archimedes-spiral).
 
 ```csharp
-//Ref. http://math.stackexchange.com/questions/179000/b%C3%A9zier-approximation-of-archimedes-spiral 
+//Ref. http://math.stackexchange.com/questions/179000/b%C3%A9zier-approximation-of-archimedes-spiral
 Tuple<bool, float, float> ZELineIntersection(float m1, float b1, float m2, float b2) {
 	float EPSILON = 0.000001f;
 
@@ -136,12 +143,3 @@ And from there, convert it to PNG format:
 var skPngdata = surface.Snapshot().Encode();
 var spiral = UIImage.LoadFromData(NSData.FromBytes(skPngdata.Data, (nuint) skPngdata.Size));
 ```
-
-
-
-
-
-
-
-
-
