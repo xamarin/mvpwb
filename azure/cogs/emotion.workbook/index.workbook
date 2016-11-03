@@ -77,7 +77,7 @@ public class Acquaintance
 The list is populated from another sample’s [seed data](https://github.com/xamarinhq/app-acquaint/blob/2ca9e83c8344d35288e4ea7868ea6e5795a25e9c/App/Common/Acquaint.Data/SeedData.cs).
 
 ```csharp
-#load "index.csx"
+#load "employees.csx"
 
 var employees = SeedData.Get();
 ```
