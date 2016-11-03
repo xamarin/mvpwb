@@ -38,7 +38,7 @@ public class CodeBasedWindow : NSWindow {
 		// Create the content view for the window and make it fill the window
 		ContentView = new NSView (Frame);
 
-        ClickMeLabel = new NSTextField (new CGRect (120, Frame.Height - 65, Frame.Width - 130, 20)) {
+        ClickMeLabel = new NSTextField (new CGRect (10, Frame.Height - 65, Frame.Width - 130, 20)) {
             BackgroundColor = NSColor.Clear,
             TextColor = NSColor.Black,
             Editable = false,
@@ -88,7 +88,7 @@ public  class CodeBasedWindowController : NSWindowController
     public CodeBasedWindowController () : base ("CodeBasedWindow")
     {
         // Define the Window's default location and size
-        CGRect contentRect = new CGRect (0, 0, 1000, 500);
+        CGRect contentRect = new CGRect (0, 0, 500, 300);
 
         // Create a new instance of the CodeBasedWindow
         base.Window = new CodeBasedWindow(contentRect, (NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable), NSBackingStore.Buffered, false);
