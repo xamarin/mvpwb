@@ -28,7 +28,7 @@ Image analysis with the Cognitive Services' `EmotionServiceClient`
 ---
 
 ```csharp
-var emotionClient = new EmotionServiceClient ("YOUR_EMOTION_SERVICE_KEY_HERE");
+var emotionKey = "YOUR_EMOTION_SERVICE_KEY_HERE";
 ```
 
 Start by adding the `Microsoft.ProjectOxford.Emotion` NuGet to the iOS Workbook.
@@ -105,6 +105,7 @@ The Emotion service will fetch the avatar from a URL in this case, but it can al
 using System.IO;
 using Microsoft.ProjectOxford.Emotion;
 
+var emotionClient = new EmotionServiceClient (emotionKey);
 await emotionClient.RecognizeAsync (employees.First ().PhotoUrl)
 ```
 
