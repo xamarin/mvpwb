@@ -1,0 +1,191 @@
+---
+uti: com.xamarin.workbook
+platforms:
+- iOS
+packages:
+- id: Xamarin.Forms
+  version: 2.3.2.127
+---
+
+# Mandelbrot Touch (iOS)
+
+```csharp
+#load "MandelbrotModel.csx"
+#load "BmpMaker.csx"
+#load "FormsInit-iOS.csx"
+```
+
+```csharp
+using System;
+using System.Threading;
+using Xamarin.Forms;
+```
+
+```csharp
+page.Padding = new Thickness(5, 20, 5, 10);
+```
+
+```csharp
+var grid = new Grid();
+grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+page.Content = grid;
+```
+
+```csharp
+var image = new Image();
+var gestureContainer = new ContentView();
+gestureContainer.Content = image;
+gestureContainer.IsClippedToBounds = true;
+grid.Children.Add(gestureContainer, 0, 0);
+```
+
+```csharp
+var progressBar = new ProgressBar();
+grid.Children.Add(progressBar, 0, 1);
+```
+
+```csharp
+var progressReporter = new Progress<double>(progress => progressBar.Progress = progress);
+```
+
+```csharp
+Complex center = new Complex(-0.75, 0);
+double magnification = 1.0;
+Size baseSize = new Size(2.5, 2.5);
+double pixelsPerUnit = 0;
+int iterations = 200;
+var mandelbrotModel = new MandelbrotModel();
+```
+
+```csharp
+async void CreateNewImage(CancellationToken cancelToken)
+{
+    double aspect = image.Width / image.Height;
+    double width = baseSize.Width / magnification * (aspect > 1 ? aspect : 1);
+    double height = baseSize.Height / magnification / (aspect < 1 ? aspect : 1);
+    pixelsPerUnit = image.Width / width;
+    BitmapInfo bitmapInfo = null;
+
+    try
+    {
+        bitmapInfo = await mandelbrotModel.CalculateAsync(center, width, height, 
+                                                          (int)image.Width, (int)image.Height,
+                                                          iterations, progressReporter, cancelToken);
+    }
+    catch (OperationCanceledException)
+    {
+        return;
+    }
+
+    BmpMaker bmpMaker = new BmpMaker(bitmapInfo.PixelWidth, bitmapInfo.PixelHeight);
+
+    int index = 0;
+    for (int row = 0; row < bitmapInfo.PixelHeight; row++)
+    {
+        for (int col = 0; col < bitmapInfo.PixelWidth; col++)
+        {
+            int iterationCount = bitmapInfo.IterationCounts[index++];
+
+            // In the Mandelbrot set: Color black.
+            if (iterationCount == -1)
+            {
+                bmpMaker.SetPixel(row, col, 0, 0, 0);
+            }
+            // Not in the Mandelbrot set: Pick a color based on count.
+            else
+            {
+                bmpMaker.SetPixel(row, col, Color.FromHsla(iterationCount / 64.0 % 1.0, 1.0, 0.5));
+            }
+        }
+    }
+    image.Source = bmpMaker.Generate();
+    image.TranslationX = 0;
+    image.TranslationY = 0;
+    image.Scale = 1;
+}
+```
+
+```csharp
+CancellationTokenSource cancelTokenSource = null;
+```
+
+```csharp
+image.SizeChanged += (sender, args) =>
+{
+    if (gestureContainer.Width > 0 && gestureContainer.Height > 0)
+    {
+        cancelTokenSource = new CancellationTokenSource();
+        CreateNewImage(cancelTokenSource.Token);
+    }
+};
+```
+
+```csharp
+var pan = new PanGestureRecognizer();
+gestureContainer.GestureRecognizers.Add(pan);
+
+double translationX = 0;
+double translationY = 0;
+
+pan.PanUpdated += (sender, args) =>
+{
+    switch (args.StatusType)
+    {
+        case GestureStatus.Started:
+            if (cancelTokenSource != null)
+            {
+                cancelTokenSource.Cancel();
+            }
+
+            translationX = image.TranslationX;
+            translationY = image.TranslationY;
+            break;
+
+        case GestureStatus.Running:
+            image.TranslationX = translationX + args.TotalX;
+            image.TranslationY = translationY + args.TotalY;
+            break;
+
+        case GestureStatus.Completed:
+            center = new Complex(center.Real - image.TranslationX / pixelsPerUnit,
+                                    center.Imaginary + image.TranslationY / pixelsPerUnit);
+
+            cancelTokenSource = new CancellationTokenSource();
+            CreateNewImage(cancelTokenSource.Token);
+            break;
+    }
+};
+```
+
+```csharp
+var pinch = new PinchGestureRecognizer();
+gestureContainer.GestureRecognizers.Add(pinch);
+
+double scale = 1;
+
+pinch.PinchUpdated += (sender, args) =>
+{
+    switch (args.Status)
+    {
+        case GestureStatus.Started:
+            if (cancelTokenSource != null)
+            {
+                cancelTokenSource.Cancel();
+            }
+
+            scale = image.Scale;
+            break;
+
+        case GestureStatus.Running:
+            image.Scale += (args.Scale -1) * scale;
+            break;
+
+        case GestureStatus.Completed:
+            magnification *= image.Scale;
+            cancelTokenSource = new CancellationTokenSource();
+            CreateNewImage(cancelTokenSource.Token);
+            break;
+    }
+};
+```
