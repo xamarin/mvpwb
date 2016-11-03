@@ -1,7 +1,7 @@
-Collections: Arrays (Inspector)
+Collections: Arrays Workbook
 =========
 
 Quick explanation of how C# arrays work.
 
 
-![](Screenshots/arrays-inspector.png)
+![](Screenshots/arrays.png)
