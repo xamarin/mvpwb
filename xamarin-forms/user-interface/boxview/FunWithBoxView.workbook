@@ -7,26 +7,78 @@ packages:
   version: 2.3.2.127
 ---
 
-# Fun with BoxView
+# Fun with BoxView (iOS)
 
-In one sense, `BoxView` is the most inconsequential view in all of Xamarin.Forms. It’s only a box of a particular color and size. But \`BoxView\` is more versatile than it first seems, and it’s valuable in Xamarin.Forms because the closest thing in the environment to a vector graphics object.
+In one sense, `BoxView` is the least important view in all of Xamarin.Forms. It’s only a box of a particular color and size, and it doesn’t do anything. But `BoxView` is more versatile than it first seems, and it’s valuable in Xamarin.Forms because it’s the closest thing the environment has to a vector graphics object. BoxView provides a means to do some rudimentary graphics in a Xamarin.Forms application.
 
-Prepare to see a lot of `HorizontalOptions` and `VerticalOptions` in this workbook.
+Experimenting with `BoxView` is also a good way to learn about the intricacies of Xamarin.Forms layout. Prepare to see a lot of `HorizontalOptions` and `VerticalOptions` in this workbook.
 
-TK. a way for you to do rudimentary graphics in a Xamarin.Forms application.
-
-As usual, this Workbook has been prepared for Xamarin.Forms by adding the NuGet package for Xamarin.Forms. The following C# Script file creates references to the Xamarin.Forms assemblies, and performs initialization for iOS.
+This Workbook has been prepared for Xamarin.Forms by adding the Xamarin.Forms NuGet package. The following C# Script file creates references to rudimentary graphics in a Xamarin.Forms application. Xamarin.Forms assemblies, and performs initialization for iOS.
 
 ```csharp
 #load "FormsInit-iOS.csx"
 ```
 
-At the conclusion of the C# Script file, a variable named \`page\` is availale of type \`ContentPage\`. A \`Padding\` property has been set to avoid overwriting the iOS status bar.
+At the conclusion of the C# Script file, a variable named `page` is availale of type `ContentPage`. A `Padding` property has been set to avoid overwriting the iOS status bar. The following two `using` directives are standard for a simple Xamarin.Forms application:
 
 ```csharp
 using System;
 using Xamarin.Forms;
 ```
+
+Instantiate a `BoxView` and set it to the `Content` property of the `page`:
+
+```csharp
+var firstBoxView = new BoxView();
+page.Content = firstBoxView;
+```
+
+The default color of the `BoxView` is transparent, however. The `Color` property must be set to make it visible. One convenient color is Color.Accent, which is intended to be visible against a light or dark background, but almost any color will do here:
+
+```csharp
+firstBoxView.Color = Color.Accent;
+```
+
+The `BoxView` fills the page, except for the area indicated by the `Padding` property, which protects the iOS status bar.
+
+When a `BoxView` (or any other element) is set to the `Content` property of a `ContentPage`, it is said to be *constrained* by the dimensions of the page, and that’s the size the `BoxView` becomes.
+
+The default `HorizontalOptions` and `VerticalOptions` properties of the `BoxView` are `LayoutOptions.Fill`. If these properties are set to any other values, the `BoxView` becomes unconstained in that dimension, and the BoxView is forced to determine its own size:
+
+```csharp
+firstBoxView.HorizontalOptions = LayoutOptions.Center;
+firstBoxView.VerticalOptions = LayoutOptions.Center;
+```
+
+The `BoxView` becomes 40 units square. Try various combinations of the `LayoutOptions` static fields (`Start`, `Center`, `End`, and `Fill`) for various effects.
+
+What are the settings of `HorizontalOptions` and `VerticalOptions` that position the `BoxView` at the far right with a 40-unit width but extending the whole height of the page?
+
+The 40-unit default width and height of the `BoxView` is established by the [`BoxView` source code](https://github.com/xamarin/Xamarin.Forms/blob/master/Xamarin.Forms.Core/BoxView.cs "BoxView source code"). To override those values, set the `WidthRequest` and `HeightRequest` properties to something other than their default values of –1. If you set one or the other property to a very small number, you can effectively draw a line. For example, this code draws a 150-unit long horizontal line that is positioned at the left of the page and is vertically center on the page:
+
+```csharp
+firstBoxView.WidthRequest = 150;
+firstBoxView.HeightRequest = 3;
+firstBoxView.HorizontalOptions = LayoutOptions.Start;
+firstBoxView.VerticalOptions = LayoutOptions.Center;
+```
+
+If both the `HorizontalOptions` and `VerticalOptions` properties are set to `LayoutOptions.Start`, the `Margin` property can govern where the line begins relative to the upper-left corner of the page:
+
+```csharp
+firstBoxView.HorizontalOptions = LayoutOptions.Start;
+firstBoxView.VerticalOptions = LayoutOptions.Start;
+firstBoxView.Margin = new Thickness(100, 50, 0, 0);
+```
+
+Normally the `BoxView` is aligned with the horizontal and vertical sides of the page, but the setting the `Rotation` property rotates the `BoxView` by that many degrees in a clockwise direction:
+
+```csharp
+firstBoxView.AnchorX = 0;   // make rotation relative to left end of line
+firstBoxView.Rotation = 30;
+```
+
+However, the approach of setting a `BoxView` to the `Content` property of a `ContentPage` is inherently limited because only one element can be set to that property, and generally a page contains multiple elements. The following code sets a `ScrollView` containing a `StackLayout` to the `Content` property of the page:
 
 ```csharp
 var scrollView = new ScrollView();
@@ -35,26 +87,36 @@ scrollView.Content = stackLayout;
 page.Content = scrollView;
 ```
 
+This configuration will allow adding multiple items to the `StackLayout` that will appear in a vertical list.
+
+Now a `BoxView` can be added to that `StackLayout`:
+
 ```csharp
-var boxView1 = new BoxView
+var plainBoxView = new BoxView
 {
     Color = Color.Accent
 };
-stackLayout.Children.Add(boxView1);
+stackLayout.Children.Add(plainBoxView);
 ```
+
+A vertical `StackLayout` constrains the width of the `BoxView`, which means that the `BoxView` stretches across the entire width of the `StackLayout`. But the `StackLayout` leaves the height of the `BoxView` unconstrained, which means that the BoxView itself determines its height, which is 40 units. As usual, you can unconstrain the width by setting the `HorizontalOptions` to something other than `LayoutOptions.Fill`:
 
 ```csharp
-boxView1.HorizontalOptions = LayoutOptions.Center;
+plainBoxView.HorizontalOptions = LayoutOptions.Center;
 ```
 
-It’s also possible to use `BoxView` as a underline for text. Here’s a single-cell `Grid` containing a `Label` with some text:
+The `VerticalOptions` setting doesn’t affect the `BoxView` in a vertical `StackLayout`, but you can still set `WidthRequest` and `HeightRequest` to change the `BoxView` size. (Try it!)
+
+## Underling Text
+
+One practical use of `BoxView` is an underline for text. Here’s a `Grid` containing a `Label` with some text:
 
 ```csharp
 var label = new Label
 {
-    Text = "Some text",
+    Text = "Underlined Text",
     FontSize = 24,
- //   FontFamily = "Zapfino" // "Snell Roundhand"
+    FontFamily = "Snell Roundhand"
 };
 
 var labelGrid = new Grid();
@@ -63,24 +125,30 @@ labelGrid.Children.Add(label);
 stackLayout.Children.Add(labelGrid);
 ```
 
-This Grid occupies the entire width of the parent StackLayout, and the Label is the same width. Make the Grid the width of the Label and center it in the StackLayout using:
+This `Grid` occupies the entire width of the parent `StackLayout`. (To visually see that, set the `BackgroundColor` of the `Grid`.) The `Label` is implicitly in the first column of the `Grid`, and that first column has a width of `Auto`, meaning that it’s the same width as the `Label`. (Try setting the `BackgroundColor` of the `Label` to see that.) Make the `Grid` the width of the `Label` and center it in the `StackLayout` using:
 
 ```csharp
 labelGrid.HorizontalOptions = LayoutOptions.Center;
 ```
 
-```csharp
-// labelStack.BackgroundColor = Color.Aqua;
-```
+Now add a `BoxView` to the `Grid` with a small `HeightRequest` to make it appear as a vertical line, and vertically positioned at the bottom of the `Grid`:
 
 ```csharp
 labelGrid.Children.Add(new BoxView
 {
     Color = Color.Black,
-    HeightRequest = 2,
+    HeightRequest = 1,
     VerticalOptions = LayoutOptions.End
 });
 ```
+
+Because no row or column was specified, the `BoxView` occupies the same cell as the `Label`.
+
+## Drawing an Empty Box
+
+Use a single-cell `Grid` for a parent to multiple `BoxView` elements that combine to form a simple image of some sort. The first step is to give this `Grid` a specific size. 
+
+TODO: Rename grid1 —> ?
 
 ```csharp
 var grid1 = new Grid
@@ -90,6 +158,8 @@ var grid1 = new Grid
 };
 stackLayout.Children.Add(grid1);
 ```
+
+The following code creates four `BoxView` elements, and adds them to the `Grid` as well as stores them in an array. The even items (indices 0 and 2) are given a `Width` of 3 units, while the odd items (indices 1 and 3) are give a `Height` of 3 units:
 
 ```csharp
 BoxView[] sides = new BoxView[4];
@@ -102,10 +172,12 @@ for (int i = 0; i < 4; i++)
         WidthRequest = i % 2 == 0 ? 3 : -1,
         HeightRequest = i % 2 == 1 ? 3 : -1
     }; 
-    grid1.Children.Add(side);    
+    grid1.Children.Add(side);
     sides[i] = side;
 }
 ```
+
+However, all four `BoxView` elements fill the `Grid` because they all have default settings of their `HorizontalOptions` and `VerticalOptions` properties. Setting them to these values cause each `BoxView` to be aligned against a side of the `Grid`:
 
 ```csharp
 sides[0].HorizontalOptions = LayoutOptions.Start;
@@ -113,6 +185,8 @@ sides[1].VerticalOptions = LayoutOptions.Start;
 sides[2].HorizontalOptions = LayoutOptions.End;
 sides[3].VerticalOptions = LayoutOptions.End;
 ```
+
+Now the `Grid` can be made 100 units wide by setting its `HorizontalOptions` property
 
 ```csharp
 grid1.HorizontalOptions = LayoutOptions.Center;
@@ -134,7 +208,7 @@ for (int i = 0; i < 100; i++)
 {
     BoxView circleBox = new BoxView
     {
-        Color = Color.Accent,
+        Color = Color.FromHsla(i / 100.0, 1.0, 0.5, 1.0),
         WidthRequest = 1,
         HeightRequest = 100 * Math.Sin(Math.Acos((i - 50) / 50.0)),
         VerticalOptions = LayoutOptions.Center
