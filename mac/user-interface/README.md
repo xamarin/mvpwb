@@ -2,7 +2,7 @@
 
 The workbooks in this section cover many of the common elements used to create a Xamarin.Mac app's User Interface such as Windows, Toolbars and Table Views.
 
-Because of the way workbooks function, each workbook in this section will cover the steps required to build a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
+Because of the way workbooks function, many of the workbooks in this section will cover the steps required to build a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
 
 <!--## Defining a UI in Interface Builder
 
@@ -24,19 +24,19 @@ The following User Interface workbooks are available for Xamarin.mac:
 
 ## [Working with Outline Views](outlineview)
 
-This workbook will cover the steps required to add a Outline View (`NSOutlineView`) to a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
+This workbook will cover working with a Outline View (`NSOutlineView`) in a Xamarin.Mac app's User Interface. `NSOutlineView` is a native cocoa control for displaying tree data.
 
 ![](outlineview/screenshots/Intro01.png)
 
 ## [Working with Table Views](tableview)
 
-This workbook will cover the steps required to add a Table View (`NSTableView`) to a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
+This workbook will cover working with a Table View (`NSOutlineView`) in a Xamarin.Mac app's User Interface. `NSTableView` is a native cocoa control for displaying data in a table.
 
 ![](tableview/screenshots/Intro01.png)
 
 ## [Working with Toolbars Workbook](toolbars)
 
-This workbook will cover the steps required to add a Toolbar (NSToolBar) to a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
+This workbook will cover working with a Toolbar (`NSToolbar`) in a Xamarin.Mac app's User Interface. `NSToolbar` is a native cocoa control for adding a user configurable Toolbar to the top of a Window (`NSWindow`).
 
 ![](toolbars/screenshots/Intro01.png)
 
