@@ -1,6 +1,7 @@
 ---
 uti: com.xamarin.workbook
-platform: iOS
+platforms:
+- iOS
 packages:
 - id: Xamarin.Forms
   version: 2.3.2.127
@@ -82,7 +83,7 @@ label.HorizontalOptions = LayoutOptions.Center;
 label.VerticalOptions = LayoutOptions.Center;
 ```
 
-Try the `Start` and `End` members of the `LayoutOptions` enumeration to position the `Label` in one of nine locations around the page.
+Try the `Start` and `End` fields of the `LayoutOptions` structure to position the `Label` in one of nine locations around the page.
 
 You can set the color of the `Label` with the `TextColor` property. One convenient approach is to obtain a `Color` value from one of the static read-only properties of the `Color` class:
 
@@ -114,7 +115,7 @@ Set the `FontSize` property to increase or decrease the size of the font:
 label.FontSize = 30;
 ```
 
-You should see the text string wrap to two lines. If not, try a larger value. 
+You should see the text string wrap to two lines. If not, try a larger value.
 
 The wrapping behavior is governed by the `LineBreakMode` property that you can set to a member of the `LineBreakMode` enumeration:
 
