@@ -107,7 +107,8 @@ async void CreateNewImage(CancellationToken cancelToken)
 ```
 
 ```csharp
-CancellationTokenSource cancelTokenSource = null;
+CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+CreateNewImage(cancelTokenSource.Token);
 ```
 
 ```csharp
@@ -122,6 +123,16 @@ image.SizeChanged += (sender, args) =>
 ```
 
 ```csharp
+// Avoid multiple gesture recognizers when code is re-executed
+for (int i = 0; i < gestureContainer.GestureRecognizers.Count; i++)
+{
+    if (gestureContainer.GestureRecognizers[i] is PanGestureRecognizer)
+    {
+        gestureContainer.GestureRecognizers.RemoveAt(i);
+        i--;
+    }
+}
+
 var pan = new PanGestureRecognizer();
 gestureContainer.GestureRecognizers.Add(pan);
 
@@ -159,6 +170,16 @@ pan.PanUpdated += (sender, args) =>
 ```
 
 ```csharp
+// Avoid multiple gesture recognizers when code is re-executed
+for (int i = 0; i < gestureContainer.GestureRecognizers.Count; i++)
+{
+    if (gestureContainer.GestureRecognizers[i] is PinchGestureRecognizer)
+    {
+        gestureContainer.GestureRecognizers.RemoveAt(i);
+        i--;
+    }
+}
+
 var pinch = new PinchGestureRecognizer();
 gestureContainer.GestureRecognizers.Add(pinch);
 
@@ -189,3 +210,4 @@ pinch.PinchUpdated += (sender, args) =>
     }
 };
 ```
+
