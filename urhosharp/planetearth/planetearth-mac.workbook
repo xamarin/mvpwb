@@ -13,11 +13,11 @@ UrhoSharp is a powerful 3D game engine for Xamarin and .NET developers. Start by
 ```
 
 ```csharp
-using Urho; using Urho.Repl; using Urho.Actions; using Urho.Shapes;
+using Urho; using Urho.Actions; using Urho.Shapes;
 ```
 
 ```csharp
-var app = await Simple3DScene.RunAsync (
+var app = await SimpleApplication.RunAsync (
 	new ApplicationOptions ("Data") {
 		Width = 600,
 		Height = 600,
@@ -127,7 +127,7 @@ satellitesNode.RemoveAllChildren();
 
 for (int i = 0; i < 3600; i++) {
 	AddSatellite(satellitesNode,
-		lat: Randoms.NextNormal (-90, 90, 0),
+		lat: Randoms.NextNormal (-90, 90),
 		lon: Randoms.Next (0, 360),
 		model: CoreAssets.Models.Box,
 		scale: 0.02f,
@@ -157,7 +157,7 @@ Spawn a few more big satellites.
 ```csharp
 for (int i = 0; i < 20; i++) {
 	AddSatellite (satellitesNode,
-		lat: Randoms.NextNormal (-90, 90, 0),
+		lat: Randoms.NextNormal (-90, 90),
 		lon: Randoms.Next (0, 360),
 		model: app.ResourceCache.GetModel ("Models/BigSatellite.mdl"),
 		scale: 0.0005f);
