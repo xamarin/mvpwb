@@ -337,4 +337,5 @@ iterationsStepper.ValueChanged += (sender, args)
     iterations = (int)Math.Pow(2, exponent);
 };
 
+grid.Children.Add(stepperStack, 0, 2);
 ```
