@@ -29,31 +29,7 @@ using WebKit;
 ```
 
 ```csharp
-public class TabController : UITabBarController{
-    public UIViewController safariTab, webViewTab, WKWebTab, safariVCTab;
-
-    public TabController (){
-
-        safariTab = new UIViewController(){Title = "Safari"};
-        safariTab.View.BackgroundColor = UIColor.White;
-
-        webViewTab = new UIViewController(){Title = "UIWebView"};
-
-        WKWebTab = new UIViewController(){Title="WKWebView"};
-
-        safariVCTab = new UIViewController(){Title="SFSafariViewController"};
-        safariVCTab.View.BackgroundColor = UIColor.White;
-    
-    var tabs = new UIViewController[]{webViewTab, WKWebTab, safariVCTab, safariTab};
-
-    ViewControllers = tabs;
-    }
-}
-```
-
-```csharp
-var tabController = new TabController();
-KeyWindow.RootViewController = tabController;
+#load "tabbar.csx"
 ```
 
 ```csharp
@@ -64,7 +40,7 @@ NSUrl url = new NSUrl("https://developer.xamarin.com");
 
 * `UIWebView` is Apple's legacy way of providing web content in your app. It was released in iOS 2.0, and has been deprecated as of 8.0.
 
-* If you plan to support iOS versions earlier than 8.0, you will have to use `UIWebView`.  
+* If you plan to support iOS versions earlier than 8.0, you will have to use `UIWebView`.
 
 * It is recommended that you should check the user's iOS version as  `UIWebView` is less optimized for performance than the alternatives. If it 8.0 or above, using either of the options explain below will create a better user experience.
 
@@ -76,13 +52,13 @@ webView.LoadRequest(new NSUrlRequest(url));
 
 ## WKWebView
 
-* Introduced in iOS 8 
+* Introduced in iOS 8
 
-* Uses the Nitro Javascript engine, the same engine used by mobile Safari. 
+* Uses the Nitro Javascript engine, the same engine used by mobile Safari.
 
 * WKWebView should always be used over UIWebView were possible due to the increased performance, built in user-friendly gestures, and the ease of interaction between the web page and your app.
 
-* `WKWebView` can be added to your app in an almost identical way to UIWebView, however as the developer you have much more control over the UI/UX and functionality. 
+* `WKWebView` can be added to your app in an almost identical way to UIWebView, however as the developer you have much more control over the UI/UX and functionality.
 
 * Creating and displaying the web view object will display the requested page, however you can control how the view is presented, how the user can navigate, and how the user exits the view.
 
@@ -98,7 +74,7 @@ webkitWebView.LoadRequest (request);
 
 * Available in iOS and later
 
-* Unlike `UIWebView` or `WKWebView`, `SFSafariViewController` is a View Controller and so cannot be used with other views. 
+* Unlike `UIWebView` or `WKWebView`, `SFSafariViewController` is a View Controller and so cannot be used with other views.
 
 * Uses the Nitro Javascript Engine
 
@@ -106,7 +82,7 @@ webkitWebView.LoadRequest (request);
 
 * by default, implements a **Done** button, allowing to user to easily return to the app.
 
-* Provides forward and back navigation buttons, allowing users to navigate through a stack of web pages. 
+* Provides forward and back navigation buttons, allowing users to navigate through a stack of web pages.
 
 * Provides the user with an address bar giving them the peace of mind that they are on the expected web page. The address bar does not allow the user to change the url.
 
@@ -145,3 +121,4 @@ button.TouchUpInside += delegate {
 This produces the following web view:
 
 ![](safari.png)
+
