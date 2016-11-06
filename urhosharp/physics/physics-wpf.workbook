@@ -21,6 +21,7 @@ var app = await SimpleApplication.RunAsync (
 	new ApplicationOptions ("Data") {
 		Width = 700, 
 		Height = 700 });
+app.Input.SetMouseVisible(true, true);
 var rootNode = app.Scene.CreateChild();
 ```
 
