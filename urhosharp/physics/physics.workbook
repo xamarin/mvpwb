@@ -1,6 +1,7 @@
 ---
 uti: com.xamarin.workbook
 platforms:
+- WPF
 - MacNet45
 ---
 
@@ -25,14 +26,15 @@ app.Input.SetMouseVisible(true, true);
 var rootNode = app.Scene.CreateChild();
 ```
 
-We have created a window containing a `SimpleApplication`. Let’s add the Trash Can model (located in Data directory and created in Blender):
+We have created a window containing a `SimpleApplication`. Let’s add the Trash Can model (located in Data directory and was created in Blender):
 
 ```csharp
 rootNode.RemoveAllChildren();
 var trashcanNode = rootNode.CreateChild();
 var trashcan = trashcanNode.CreateComponent<StaticModel>();
 trashcan.Model = app.ResourceCache.GetModel("bucket.mdl");
-trashcan.SetMaterial(Material.FromColor(Color.Gray));
+trashcan.SetMaterial(Material.FromColor(
+	new Color(0.4f, 0.6f, 0.2f));
 trashcanNode.Position = new Vector3(0, -2, 7);
 trashcanNode.SetScale(0.4f);
 ```
@@ -42,7 +44,8 @@ Apply RigidBody and CollisionShape to handle physics.
 ```csharp
 trashcanNode.CreateComponent<RigidBody>();
 var shape = trashcanNode.CreateComponent<CollisionShape>();
-shape.SetTriangleMesh(trashcan.Model, 0, Vector3.One * 1.1f, Vector3.Zero, Quaternion.Identity);
+shape.SetTriangleMesh(trashcan.Model, 0, Vector3.One, 
+	Vector3.Zero, Quaternion.Identity);
 ```
 
 Add an ambient light.
@@ -79,7 +82,6 @@ static void ThrowBall(Node container, Vector3 linearVelocity)
 	rigidBody.Friction = 0.5f;
 	var ballShape = ballNode.CreateComponent<CollisionShape>();
 	ballShape.SetSphere(1, Vector3.Zero, Quaternion.Identity);
-
 	rigidBody.SetLinearVelocity(linearVelocity);
 }
 ```
@@ -97,22 +99,28 @@ var planeNode = rootNode.CreateChild();
 planeNode.Scale = new Vector3(100, 1, 100);
 var plane = planeNode.CreateComponent<StaticModel>();
 plane.Model = CoreAssets.Models.Plane;
-plane.SetMaterial(Material.FromColor(Color.White, true));
+plane.SetMaterial(Material.FromColor(
+	new Color(0.95f, 0.95f, 0.95f), true));
 planeNode.Position = new Vector3(0, -2, 0);
 var planeRb = planeNode.CreateComponent<RigidBody>();
 planeRb.RollingFriction = 0.5f;
 var planeShape = planeNode.CreateComponent<CollisionShape>();
-planeShape.SetStaticPlane(new Vector3(0, 0, 0), Quaternion.Identity);
+planeShape.SetStaticPlane(
+	new Vector3(0, 0, 0), Quaternion.Identity);
 ```
 
 ```csharp
-ThrowBall(rootNode, linearVelocity: new Vector3(0, 0.3f, 1f) * 8f);
+ThrowBall(rootNode, linearVelocity: 
+	new Vector3(0, 0.3f, 1f) * 8f);
 ```
 
 ```csharp
-for (int i = 0; i < 10; i++)
+/*for (int i = 0; i < 10; i++)
 {
-	ThrowBall(rootNode, linearVelocity: new Vector3(Randoms.Next(-0.05f, 0.05f), Randoms.Next(0.2f, 0.4f), Randoms.Next(0.8f, 1.2f)) * Randoms.Next(8, 10));
+	ThrowBall(rootNode, linearVelocity: new Vector3(
+		Randoms.Next(-0.05f, 0.05f), 
+		Randoms.Next(0.2f, 0.4f), 
+		Randoms.Next(0.8f, 1.2f)) * Randoms.Next(8, 10));
 	await app.RootNode.RunActionsAsync(new DelayTime(0.5f));
-}
+}*/
 ```
