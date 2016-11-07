@@ -9,13 +9,13 @@ packages:
 
 # Mandelbrot Touch (iOS)
 
-In 1980, while working at an IBM research center, Polish born mathematician Benoit Mandelbrot saw a crude computer-generated image that had published two years earlier:
+In 1980, while working at an IBM research center, Polish born mathematician Benoit Mandelbrot saw a crude computer-generated image that had been published two years earlier:
 
 ![From the public domain image on the Wikipedia article on the Mandelbot Set.](Mandelbrot.png "The Mandelbrot Set")
 
-Mandelbrot had already coined the word *fractal* five years earlier to describe complex self-similar geometries, but he eventually did so much work connected with the mathematics bethind this particular image that it became known as the *Mandelbrot set*.
+Mandelbrot had already been researching complex self-similar geometries, and in 1975 he coined the word *fractal* in connection with his work. He eventually did so much research into the mathematics bethind this particular image that it became known as the *Mandelbrot set*.
 
-The program described in this workbook draws a more detailed rendition of the Mandelbrot set with color. Using touch, you can pan the image or use a pinch gesture to zoom in or out.
+The program described in this workbook draws a more detailed (and colored) rendition of the Mandelbrot set. You can pan the image with your fingers or use a pinch gesture to zoom in or out.
 
 ## The Mandelbrot Math
 
@@ -23,11 +23,13 @@ The Mandelbrot set is graphed on the complex plane, where each point is a comple
 
 c = x \+ y*i*
 
-The real part (x) is represented by the horizontal axis, and the imaginary part (y) by the vertical axis.
+The real part (x) is represented by the horizontal axis, and the imaginary part (y) by the vertical axis. In the image shown above, the point between the small circle on the left and the large cardiod is  –0.75 \+ 0*i*.
 
-To calculation the Mandebrot set, begin by taking any complex point on this plane and call it c. Initialize the complex number z to zero:
+To calculate the Mandebrot set, begin by taking any complex point on this plane and call it c:
 
 c = x \+ y*i*
+
+Initialize the complex number z to zero:
 
 z = 0
 
@@ -35,15 +37,15 @@ Now perform the following recursive calculation:
 
 z ← z² \+ c
 
-The result will either diverge to infinity or it will not. If z does not diverge to infinity, then c is is said to be a member of the Mandelbrot set. Otherwise it is not a member. This operation must be repeated for every point of interest in the plane.
+The result will either diverge to infinity or it will not. If z does not diverge to infinity, then c is is said to be a member of the Mandelbrot set. (These points are indicated in the diagram above with asterisks.) Otherwise the complex point is not a member of the Mandelbrot set. This operation must be repeated for every point of interest in the plane.
 
-Sometime the recursive calculation must be performed very many times to determine if z  diverges or not. If the absolute value of z ever becomes 2 or greater, than the values will eventually diverge to infinity. But otherwise, the only way to determine if a point is a member or not is to continue performing the recursive calculations.
+Sometime the recursive calculation must be performed very many times to determine if z  diverges or not. If the absolute value of z ever becomes 2 or greater, than the values will eventually diverge to infinity. But otherwise, the only way to determine if a point is a member of the Mandelbrot set or not is to continue performing the recursive calculations.
 
 For that reason, Mandelbrot calculations are notoriously computation-intensive and are best performed in secondary threads of execution.
 
-It has become common for Mandelbrot sets to incorporate color. Points that are members of the Mandelbrot set are colored black. Points that are not members are given a color based on the number of iterations required to determine that the calculation will diverge to infinity.
+It has become common for programs that display Mandelbrot sets to incorporate color. Points that are members of the Mandelbrot set are colored black. Points that are not members are given a color based on the number of iterations required to determine that the calculation will diverge to infinity.
 
-The program described here uses a bitmap to render the Mandelbrot set. The recursive calculation is performed on the complex point that corresponds to each pixel of the bitmap.
+The program described here uses a bitmap to render the Mandelbrot set. The recursive calculation is performed on each complex point that corresponds to each pixel of the bitmap.
 
 ## The Code Support
 
@@ -57,11 +59,9 @@ This workbook includes several C# Script files for support:
 
 The MandelbrotModel.csx file contains a class named `MandelbrotModel` with a single asynchronous method named `CalculateAsync` that performs the basic Mandelbort calculation for an array of points. The results are later used to create a bitmap, so several parameters to this method indicate the pixel size of this bitmap, and the complex coordinates corresponding to that array of pixels.
 
-The `CalculateAsync` method makes use of a structure named `Complex` that is defined in the Complex.csx file, and returns an object of type `Task<BitmapInfo>`.
+The `CalculateAsync` method makes use of a structure named `Complex` that is defined in the Complex.csx file. The Mandelbrot.csx file contains a `#load` command for Complex.csx. The method returns an object of type `Task<BitmapInfo>`. The `BitmapInfo` class (defined in BitmapInfo.csx) contains sufficient information to create a bitmap to render the results of the Mandelbrot calculation — a pixel width and height, and an array of integers indicating the number of iterations that was required for each point to determine that the point was not a member of the Mandelbrot set, or –1 if the point is a member.
 
-The `BitmapInfo` class (defined in BitmapInfo.csx) contains sufficient information to create a bitmap to render the results of the Mandelbrot calculation — a pixel width and height, and an array of integers indicating the number of iterations required for each point to determine the point was not a member of the Mandelbrot set, or –1 if the point is a member.
-
-The BmpMaker.csx file contains a class name `BmpMaker` (“bitmap maker”) that creates a Xamarin.Forms `ImageSource` object using the BMP file format.
+The BmpMaker.csx file contains a class name `BmpMaker` (“bitmap maker”) that creates a Xamarin.Forms `ImageSource` object based on the BMP file format.
 
 More information on these classes (and the Mandelbrot calculation itself) can be found in [Chapter 13 (Bitmaps)](https://developer.xamarin.com/guides/xamarin-forms/creating-mobile-apps-xamarin-forms/summaries/chapter13 "Chapter 13. Bitmaps")  and [Chapter 20 (Async and File I/O)](https://developer.xamarin.com/guides/xamarin-forms/creating-mobile-apps-xamarin-forms/summaries/chapter20 "Chapter 20. Async and File I/O") of the book *[Creating Mobile Apps with Xamairn.Forms](https://developer.xamarin.com/guides/xamarin-forms/creating-mobile-apps-xamarin-forms/ "Creating Mobile Apps with Xamarin.Forms")*.
 
@@ -77,13 +77,13 @@ using System.Threading;
 using Xamarin.Forms;
 ```
 
-Set some `Padding`on the page that guards against overwriting the iOS status bar:
+Set some `Padding`on the page that also guards against overwriting the iOS status bar:
 
 ```csharp
 page.Padding = new Thickness(5, Device.OnPlatform(20, 5, 5), 5, 10);
 ```
 
-The main layout is a three-row `Grid`. The top row is allocated all the space not required by the other two rows:
+The main layout is a three-row `Grid`. The top row is allocated all the space that is not required by the other two rows:
 
 ```csharp
 var grid = new Grid();
@@ -93,7 +93,7 @@ grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 page.Content = grid;
 ```
 
-The top row is the bitmap, which in Xamarin.Forms is displayed by an `Image` element. However, to obtain gesture input that is affects the `Image` element, the `Image` element is made a child of a `ContentView` named `gestureContainer`:
+The top row is the bitmap, which in Xamarin.Forms is displayed by an `Image` element. However, the program makes this `Image` element a child of a `ContentView` named `gestureContainer`.
 
 ```csharp
 var image = new Image();
@@ -103,16 +103,16 @@ gestureContainer.IsClippedToBounds = true;
 grid.Children.Add(gestureContainer, 0, 0);
 ```
 
-See the guide on [Xamarin.Forms gestures](https://developer.xamarin.com/guides/xamarin-forms/user-interface/gestures/ "Gestures") for more details about using such a container.
+This gestureContainer allows the progrm to obtain gesture input that affects the `Image` element. See the guides on [Xamarin.Forms gestures](https://developer.xamarin.com/guides/xamarin-forms/user-interface/gestures/ "Gestures") for more details about using such a container.
 
-The second row of the Grid contains a ProgressBar to show the progress of each complete Mandelbrot calculation:
+The second row of the `Grid` contains a `ProgressBar` to show the progress of each complete Mandelbrot calculation:
 
 ```csharp
 var progressBar = new ProgressBar();
 grid.Children.Add(progressBar, 0, 1);
 ```
 
-When you execute that code, you should see the ProgressBar appear as a dim gray line near the bottom of the screen.
+When you execute that code, you should see the `ProgressBar` appear as a dim gray line near the bottom of the screen.
 
 This `ProgressBar` must be updated in the `CalculateAsync` method of the `MandelbrotModel` class. Because this method runs in a secondary thread of execution, the safest way of updating the `ProgressBar` involves a class provided specifically for this purpose named `Progress`:
 
@@ -120,26 +120,36 @@ This `ProgressBar` must be updated in the `CalculateAsync` method of the `Mandel
 var progressReporter = new Progress<double>(progress => progressBar.Progress = progress);
 ```
 
-A lambda function passed to the `Progress` constructor updates the `ProgressBar` from an argument to the function.
+A lambda function is passed to the `Progress` constructor that updates the `ProgressBar` from an argument to the function.
 
 ## The Mandelbrot Calculation
 
-Next are some constants and variables that define the Mandelbrot image. Taken together, the `baseSize`, `center`, and `magnification` arguments indicate that the initial Mandelbrot image will have real coordinates ranging from –2.0 (on the left edge of the bitmap) to 0.5 (on the right edge), and imaginary coordinates from 1.25 on the top to –1.25 on the bottom. However, the actual range in either the horizontal or vertical direction will be larger than that depending on the aspect ratio of the bitmap.
-
-The `center` variable will change when the image is panned; the `magnification` variable changes as the image is zoomed.
+Next are some constants and variables that define the Mandelbrot image. Taken together, the `baseSize`, `center`, and `magnification` arguments indicate that the initial Mandelbrot image will have real coordinates ranging from –2.0 (on the left edge of the bitmap) to 0.5 (on the right edge), and imaginary coordinates from 1.25 on the top to –1.25 on the bottom. However, the actual range in either the horizontal or vertical direction will be larger than that depending on the aspect ratio of the bitmap:
 
 ```csharp
 static readonly Size baseSize = new Size(2.5, 2.5);
 Complex center = new Complex(-0.75, 0);
 double magnification = 1.0;
+```
+
+The `center` variable will change when the image is panned; the `magnification` variable changes as the image is zoomed.
+
+The `iterations` variable indicates the number of recursive calculations performed before the point is assumed to be in the Mandelbrot Set. The `pixelsPerUnit` variable is calculated based on the pixel size of the bitmap:
+
+```csharp
 int iterations = 256;
 double pixelsPerUnit = 0;
+```
+
+Finally, the `MandelbrotModel` class is instantiated to perform the actual calculation.
+
+```csharp
 var mandelbrotModel = new MandelbrotModel();
 ```
 
-The `iterations` variable indicates the number of recursive calculations performed before the point is assumed to be in the Mandelbrot Set. The `pixelsPerUnit` variable is calculated based on the pixel size of the bitmap. Finally, the `MandelbrotModel` class is instantiated to perform the actual calculation. (Recall that this class is defined in the MandelbrotModel.csx C# script file.)
+Recall that this class is defined in the MandelbrotModel.csx C# script file.
 
-The `CreateNewImage` method is the core
+The `CreateNewImage` method calls the `CalculateAsync` method in `MandelbrotModel` and then constructs a bitmap from that information. The `CalculateAsync` method is in a `try` and `catch` block to allow the method to gracefully terminate if the asynchronous operation has been cancelled. You’ll see shortly how an operation is cancelled if a new operation is started:
 
 ```csharp
 async void CreateNewImage(CancellationToken cancelToken)
@@ -189,23 +199,46 @@ async void CreateNewImage(CancellationToken cancelToken)
 }
 ```
 
+The following code calls `CreateNewImage` for the first time to create the image with the default settings:
+
 ```csharp
 CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
 CreateNewImage(cancelTokenSource.Token);
 ```
 
+You should see the `ProgressBar` go from minimum to maximum and then the image will appear.
+
+The bitmap should be recomputed if the size of the `Image` element changes. On mobile platforms this happens mostly when the orientation of the phone changes from portrait to landscape:
+
 ```csharp
-image.SizeChanged += (sender, args) =>
+// Remove the previous SizeChanged handler if the code is being reexecuted. 
+image.SizeChanged -= OnSizeChanged;
+
+// Attach the SizeChanged handler
+image.SizeChanged += OnSizeChanged;
+
+void OnSizeChanged(object sender, EventArgs)
 {
     if (gestureContainer.Width > 0 && gestureContainer.Height > 0)
     {
+        cancelTokenSource.Cancel();
         cancelTokenSource = new CancellationTokenSource();
         CreateNewImage(cancelTokenSource.Token);
     }
-};
+}
 ```
 
+In the course of experimenting with the workbook, this code might be executed more than once. For that reason, the `OnSizeChanged` handler is detached from the `SizeChanged` event first if the code has been executed previously. This ensures that the `SizeChanged` event has only one attached handler.
+
+Notice also that the `Cancel` method is called on the previous `CancellationTokenSource`. If the `CalculateAsync` method is curently running, this will cancel it. Then the `OnSizeChanged` handler creates a new `CancellationTokenSource` for calling `CreateNewImage` again. If the orientation of the phone is changed before the image is calculated, that calculation will be interrupted and a new one begun.
+
+This same strategy is used for implementing the two different types of touch gestures — pan and pinch.
+
 ## Panning the Image
+
+This program adds `GestureRecognizer` objects to the `GestureRecognizers` collection property of the `ContentView` named `gestureContainer`. The handlers for these `GestureRecognizer` objects then uses the information to apply transforms to the `Image` element that is a child of `gestureContainer`.
+
+The program uses two classes that derive from `GestureRecognizer` — `PanGestureRecognizer` and `PinchGestureRecognizer`. The code block below begins by removing any existing `PanGestureRecognizer` from the `GestureRecognizers` collection; this is simply a precaution if the code is re-executed:
 
 ```csharp
 // Avoid multiple gesture recognizers when code is re-executed
@@ -229,11 +262,7 @@ pan.PanUpdated += (sender, args) =>
     switch (args.StatusType)
     {
         case GestureStatus.Started:
-            if (cancelTokenSource != null)
-            {
-                cancelTokenSource.Cancel();
-            }
-
+            cancelTokenSource.Cancel();
             translationX = image.TranslationX;
             translationY = image.TranslationY;
             break;
@@ -245,7 +274,7 @@ pan.PanUpdated += (sender, args) =>
 
         case GestureStatus.Completed:
             center = new Complex(center.Real - image.TranslationX / pixelsPerUnit,
-                                    center.Imaginary + image.TranslationY / pixelsPerUnit);
+                                 center.Imaginary + image.TranslationY / pixelsPerUnit);
 
             cancelTokenSource = new CancellationTokenSource();
             CreateNewImage(cancelTokenSource.Token);
@@ -254,7 +283,17 @@ pan.PanUpdated += (sender, args) =>
 };
 ```
 
-Pinching the Image
+The `PanUpdated` handler performs different processing based on the `StatusType` property, which indicates if the pan gesture is starting, in progress, or completed. If the pan gesture is just starting, the code cancels any calculation that might be in progress.
+
+While the pan gesture is running, the code alters the `TranslationX` and `TranslationY` properties based on the total pan offest during this gesture. This causes part of the bitmap to be moved offscreen. At the end of the gesture (when the user removes a finger from the screen), the code calls `CreateNewImage` with recalculated arguments to to create  a new bitmap.
+
+Notice that if the `CreateNewImage` method (shown earlier) is allowed to run to completion, then it sets the `TranslationX` and `TranslationY` properties back to their default values of 0 because the new bitmap is calculated based on those translation factors, and it replaces the previous translated bitmap.
+
+## Pinching the Image
+
+The program uses a similar strategy for pinch gestures, first removing the previous  `PinchGestureRecognizer` object from the `GestureRecognizers` collection if the code is re-executed.
+
+As with the `PanGestureRecognizer`, the `PinchGestureRecognizer `defines a property that indicates if the gesture is starting, running, or completed. The code here alters the `Scale` property of the `Image`. This property has a default value of 1, and each call to the `PinchUpdated` method is an additional scaling factor for that event:
 
 ```csharp
 // Avoid multiple gesture recognizers when code is re-executed
@@ -277,16 +316,12 @@ pinch.PinchUpdated += (sender, args) =>
     switch (args.Status)
     {
         case GestureStatus.Started:
-            if (cancelTokenSource != null)
-            {
-                cancelTokenSource.Cancel();
-            }
-
+            cancelTokenSource.Cancel();
             scale = image.Scale;
             break;
 
         case GestureStatus.Running:
-            image.Scale += (args.Scale -1) * scale;
+            image.Scale += (args.Scale - 1) * scale;
             break;
 
         case GestureStatus.Completed:
@@ -298,13 +333,28 @@ pinch.PinchUpdated += (sender, args) =>
 };
 ```
 
+This code demontrates a simplified apporach to `PinchUpdated` processing. All the zooming is relative to the center of the image. It’s possible to use additional arguments of type `Point` named `ScaleOrigin` to handle scaling based on the position of the two fingers performing the pinch operation. around other centers. See the [PinchGesture sample](https://developer.xamarin.com/samples/xamarin-forms/WorkingWithGestures/PinchGesture/ "PinchGesture sample") for a more complex approach.
+
 ## Adjusting the Iterations
 
+You’ll notice earlier that an `iterations` variable was defined earlier with a value of 128. This is the maximum number of iterative calculations. As you zoom more and more into the image, you’ll generally need more iterations to see the detail. The last enhancement to the program is the addition of a `Stepper` element. This allows you to increase or decrease the number of iterations in powers of two:
+
 ```csharp
+// Avoid multiple Stepper elements if code is re-executed
+for (int i = 0; i < grid.Children.Count; i++)
+{
+    if (grid.Children[i] is StackLayout)
+    {
+        grid.Children.RemoveAt(i);
+        i--;
+    }
+}
+
 var stepperStack = new StackLayout
 {
     Orientation = StackOrientation.Horizontal
 };
+
 var labelStack = new StackLayout
 {
     Orientation = StackOrientation.Horizontal,
@@ -317,6 +367,7 @@ labelStack.Children.Add(new Label
     Text = "Iterations = 2",
     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
 });
+
 Label exponentLabel = new Label
 {
     Text = "7",
@@ -335,7 +386,11 @@ iterationsStepper.ValueChanged += (sender, args)
     int exponent = (int)(sender as Stepper).Value;
     exponentLabel.Text = exponent.ToString();
     iterations = (int)Math.Pow(2, exponent);
+    cancelTokenSource = new CancellationTokenSource();
+    CreateNewImage(cancelTokenSource.Token);
 };
 
 grid.Children.Add(stepperStack, 0, 2);
 ```
+
+The `ValueChanged` handler at the bottom of the code cell updates the `Label`, sets the `iterations` variable, cancels any calculation currently in progress, and starts a new one.

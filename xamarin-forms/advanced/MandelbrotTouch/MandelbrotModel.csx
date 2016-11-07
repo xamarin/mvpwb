@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 class MandelbrotModel
 {
     public Task<BitmapInfo> CalculateAsync(Complex Center, 
-                                            double width, double height,
-                                            int pixelWidth, int pixelHeight, 
-                                            int iterations,
-                                            IProgress<double> progress, 
-                                            CancellationToken cancelToken)
+                                           double width, double height,
+                                           int pixelWidth, int pixelHeight, 
+                                           int iterations,
+                                           IProgress<double> progress, 
+                                           CancellationToken cancelToken)
     {
         return Task.Run(() =>
         {
