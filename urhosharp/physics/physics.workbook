@@ -34,7 +34,7 @@ var trashcanNode = rootNode.CreateChild();
 var trashcan = trashcanNode.CreateComponent<StaticModel>();
 trashcan.Model = app.ResourceCache.GetModel("bucket.mdl");
 trashcan.SetMaterial(Material.FromColor(
-	new Color(0.4f, 0.6f, 0.2f));
+	new Color(0.4f, 0.6f, 0.2f)));
 trashcanNode.Position = new Vector3(0, -2, 7);
 trashcanNode.SetScale(0.4f);
 ```
@@ -77,9 +77,9 @@ static void ThrowBall(Node container, Vector3 linearVelocity)
 	var ball = ballNode.CreateComponent<Sphere>();
 	ball.Color = new Color(Randoms.Next(), Randoms.Next(), Randoms.Next());
 	var rigidBody = ballNode.CreateComponent<RigidBody>();
-	rigidBody.Mass = 2f;
-	rigidBody.RollingFriction = 0.5f;
-	rigidBody.Friction = 0.5f;
+	rigidBody.Mass = 1f;
+	rigidBody.RollingFriction = 0.1f;
+	rigidBody.Friction = 0.1f;
 	var ballShape = ballNode.CreateComponent<CollisionShape>();
 	ballShape.SetSphere(1, Vector3.Zero, Quaternion.Identity);
 	rigidBody.SetLinearVelocity(linearVelocity);
@@ -103,7 +103,7 @@ plane.SetMaterial(Material.FromColor(
 	new Color(0.95f, 0.95f, 0.95f), true));
 planeNode.Position = new Vector3(0, -2, 0);
 var planeRb = planeNode.CreateComponent<RigidBody>();
-planeRb.RollingFriction = 0.5f;
+planeRb.RollingFriction = 0.2f;
 var planeShape = planeNode.CreateComponent<CollisionShape>();
 planeShape.SetStaticPlane(
 	new Vector3(0, 0, 0), Quaternion.Identity);
