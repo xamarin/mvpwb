@@ -142,9 +142,15 @@ public class TraditionalCodeBasedWindow : NSWindow
 		// Create the content view for the window and make it fill the window
 		ContentView = new LayerBackedView (Frame);
 
+		// _________________________________________________________________
+        // WARNING! 
+        // The modern macOS App UI is currently unavaiable in the Version 
+        // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+        // future release.
+        // _________________________________________________________________
 		// Configure the Window to use Tabs
-		TabbingMode = NSWindowTabbingMode.Preferred;
-		TabbingIdentifier = "Traditional";
+		// TabbingMode = NSWindowTabbingMode.Preferred;
+		// TabbingIdentifier = "Traditional";
 
 		// Define Window UI
 		ClickMeLabel = new NSTextField (new CGRect (10, Frame.Height - 125, Frame.Width - 20, 20)) {
@@ -240,15 +246,21 @@ public class TraditionalCodeBasedWindowController : NSWindowController
 		base.AwakeFromNib ();
 	}
 
+	// _________________________________________________________________
+    // WARNING! 
+    // The modern macOS App UI is currently unavaiable in the Version 
+    // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+    // future release.
+    // _________________________________________________________________
 	/// <summary>
 	/// Gets the new window for tab.
 	/// </summary>
 	/// <param name="sender">Sender.</param>
-	public override void GetNewWindowForTab (NSObject sender)
-	{
-		// Create a new window when the Plus button is clicked
-		ToolbarResources.OpenNewTraditionalWindow ();
-	}
+	// public override void GetNewWindowForTab (NSObject sender)
+	// {
+	// 	// Create a new window when the Plus button is clicked
+	// 	ToolbarResources.OpenNewTraditionalWindow ();
+	// }
 	#endregion
 }
 
@@ -308,9 +320,15 @@ public class ModernCodeBasedWindow : NSWindow
 		// Hide the Title bar for a streamlined UI
 		TitleVisibility = NSWindowTitleVisibility.Hidden;
 
+		// _________________________________________________________________
+        // WARNING! 
+        // The modern macOS App UI is currently unavaiable in the Version 
+        // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+        // future release.
+        // _________________________________________________________________
 		// Configure the Window to use Tabs
-		TabbingMode = NSWindowTabbingMode.Preferred;
-		TabbingIdentifier = "Modern";
+		// TabbingMode = NSWindowTabbingMode.Preferred;
+		// TabbingIdentifier = "Modern";
 
 		// Define Window UI
 		ClickMeLabel = new NSTextField (new CGRect (10, Frame.Height - 125, Frame.Width - 20, 20)) {
@@ -406,15 +424,21 @@ public class ModernCodeBasedWindowController : NSWindowController
 		base.AwakeFromNib ();
 	}
 
+	// _________________________________________________________________
+    // WARNING! 
+    // The modern macOS App UI is currently unavaiable in the Version 
+    // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+    // future release.
+    // _________________________________________________________________
 	/// <summary>
 	/// Gets the new window for tab.
 	/// </summary>
 	/// <param name="sender">Sender.</param>
-	public override void GetNewWindowForTab (NSObject sender)
-	{
-		// Create a new window when the Plus button is clicked
-		ToolbarResources.OpenNewModernWindow ();
-	}
+	// public override void GetNewWindowForTab (NSObject sender)
+	// {
+	// 	// Create a new window when the Plus button is clicked
+	// 	ToolbarResources.OpenNewModernWindow ();
+	// }
 	#endregion
 }
 

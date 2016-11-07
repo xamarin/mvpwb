@@ -342,6 +342,8 @@ ToolbarResources.OpenNewModernWindow();
 
 Every time either one of these code blocks are run, a new Window will be created with the latest version of the `MainToolbar` and it will be displayed in a tab grouped by Traditional or Modern Window types.
 
+⚠️ **WARNING!** *Support for automatically tabbed windows is currently unavaiable in the Version 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a future release.*
+
 ---
 
 ⚠️ ***Note**: Because of the way that `NSToolBars` are handled by macOS, all of the `NSWindows` within a given app share a single Toolbar instance based on the Identifier assiged the to the Toolbar  when it was created. As a result, changing the Toolbar in one Window will affect the Toolbars on all other open Windows in the app that used the same Identifier to build the Toolbar.*
@@ -751,3 +753,4 @@ ToolbarResources.LastModernWindowController.Window.Toolbar = toolbar;
 ```
 
 When the code block above is run, the last Modern Style Window created will be switched to use the new Toolbar including the Search field.
+

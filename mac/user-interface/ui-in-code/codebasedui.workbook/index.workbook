@@ -333,7 +333,7 @@ Next, a series of `NSMenuItem` instances are created, configured and attached to
 
 ---
 
-⚠️ ***WARNING! **The modern macOS App UI is currently unavaiable in the Version 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a future release.*
+⚠️ **WARNING!** *The modern macOS App UI is currently unavaiable in the Version 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a future release.*
 
 ---
 
@@ -599,4 +599,3 @@ The following NSAppearance types are defined:
 * Set the Window to another type of `NSAppearance`.
 
 ---
-
