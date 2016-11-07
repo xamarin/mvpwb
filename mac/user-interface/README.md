@@ -30,7 +30,7 @@ This workbook will cover working with a Outline View (`NSOutlineView`) in a Xama
 
 ## [Working with Table Views](tableview)
 
-This workbook will cover working with a Table View (`NSOutlineView`) in a Xamarin.Mac app's User Interface. `NSTableView` is a native cocoa control for displaying data in a table.
+This workbook will cover working with a Table View (`NSTableView`) in a Xamarin.Mac app's User Interface. `NSTableView` is a native cocoa control for displaying data in a table.
 
 ![](tableview/screenshots/Intro01.png)
 
