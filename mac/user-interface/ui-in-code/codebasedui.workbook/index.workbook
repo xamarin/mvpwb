@@ -331,6 +331,12 @@ Next, a series of `NSMenuItem` instances are created, configured and attached to
 
 ## Building Modern macOS App UI
 
+---
+
+⚠️ ***WARNING! **The modern macOS App UI is currently unavaiable in the Version 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a future release.*
+
+---
+
 Modern macOS apps such as Apple's Safari web browser, Pages word processor and Numbers spread sheet use many new technologies to present a unified, context sensitive User Interface that does away with traditional UI elements such as floating panels and multiple open windows.
 
 Next let’s look at several advanced technologies a developer can use to build a modern macOS app in Xamarin.Mac
@@ -466,9 +472,15 @@ public class ModernCodeBasedWindow : NSWindow {
         // Hide the Title bar for a streamlined UI
         TitleVisibility = NSWindowTitleVisibility.Hidden;
 
+        // _________________________________________________________________
+        // WARNING! 
+        // The modern macOS App UI is currently unavaiable in the Version 
+        // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+        // future release.
+        // _________________________________________________________________
         // Configure the Window to use Tabs
-        TabbingMode = NSWindowTabbingMode.Preferred;
-        TabbingIdentifier = "Modern";
+        // TabbingMode = NSWindowTabbingMode.Preferred;
+        // TabbingIdentifier = "Modern";
     }
     #endregion
 }
@@ -530,12 +542,18 @@ public  class ModernCodeBasedWindowController : NSWindowController
         base.AwakeFromNib ();
     }
 
-    public override void GetNewWindowForTab (NSObject sender)
-    {
-        // Create a new window when the Plus button is clicked
-        var newWindowController = new ModernCodeBasedWindowController ();
-        newWindowController.Window.MakeKeyAndOrderFront ((NSObject)NSApplication.SharedApplication.Delegate);
-    }
+    // _________________________________________________________________
+    // WARNING! 
+    // The modern macOS App UI is currently unavaiable in the Version 
+    // 0.99.0.0 of Xamarin Workbooks. This feature will be restored in a 
+    // future release.
+    // _________________________________________________________________
+    // public override void GetNewWindowForTab (NSObject sender)
+    // {
+    //     // Create a new window when the Plus button is clicked
+    //     var newWindowController = new ModernCodeBasedWindowController ();
+    //     newWindowController.Window.MakeKeyAndOrderFront ((NSObject)NSApplication.SharedApplication.Delegate);
+    // }
     #endregion
 }
 ```
@@ -581,3 +599,4 @@ The following NSAppearance types are defined:
 * Set the Window to another type of `NSAppearance`.
 
 ---
+
