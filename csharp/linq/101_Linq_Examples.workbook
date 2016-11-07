@@ -1,7 +1,7 @@
 ---
 uti: com.xamarin.workbook
-platform: Console
-packages: []
+platforms:
+- Console
 ---
 
 # 101 (and then some) LINQ Examples
@@ -116,12 +116,16 @@ This sample uses `select` to produce a sequence of ints one higher than those in
 
 ```csharp
 using System.Data;
+using System.Linq;
 
 var numbers = testDS.Tables["Numbers"].AsEnumerable();
 
 var numsPlusOne =
     from n in numbers
     select n.Field<int>(0) + 1;
+
+Console.WriteLine("Numbers and their successors:");
+TestHelper.ZipToStrings<DataRow,int>(numbers, numsPlusOne, (a,b)=>$"{a.Field<int>(0)} + 1 = {b}");
 ```
 
 ### Select - Simple 2
@@ -153,10 +157,7 @@ var strings = new [] { "zero", "one", "two", "three", "four", "five", "six", "se
 var textNums = numbers.Select(p => strings[p.Field<int>("number")]);
 
 Console.WriteLine("Number strings:");
-foreach (var s in textNums)
-{
-    Console.WriteLine(s);
-}
+TestHelper.ZipToStrings<DataRow, string>(numbers, textNums, (a,b)=>$"String at index [{a.Field<int>("number")}] is {b}");
 ```
 
 ### Select - Anonymous Types 1
@@ -218,7 +219,7 @@ var productInfos = products.
 Console.WriteLine("Product Info:");
 foreach (var productInfo in productInfos)
 {
-    Console.WriteLine("{0} is in the category {1} and costs {2:N2} per unit.", productInfo.ProductName, productInfo.Category, productInfo.Price);
+    Console.WriteLine($"{productInfo.ProductName} is in the category {productInfo.Category} and costs ${productInfo.Price:N2} per unit.");
 }
 ```
 
@@ -811,7 +812,7 @@ foreach (var g in orderGroups)
     Console.WriteLine("Key: {0}", g.Key);
     foreach (var w in g)
     {
-        Console.WriteLine("\t" + w.Field<string>("anagram"));
+        Console.WriteLine($"\t has the anagram: {w.Field<string>("anagram")}");
     }
 }
 ```
@@ -1107,7 +1108,7 @@ foreach (var n in numbers)
 }
 ```
 
-### Repeat 
+### Repeat
 
 This sample uses `Repeat` to generate a sequence that contains the number 7 ten times.
 
@@ -1214,7 +1215,7 @@ var orderCounts =
 
 ### Count - Grouped
 
-This sample uses `Count `to return a list of categories and how many products each has.
+This sample uses `Count`to return a list of categories and how many products each has.
 
 ```csharp
 List<Product> products = GetProductList();
@@ -1709,7 +1710,7 @@ foreach (var item in custSuppliers)
 }
 ```
 
-## Join With Projection - 2 
+## Join With Projection - 2
 
 For each supplier in the table of suppliers, this query returns all the customers from the same city and country, or else a string indicating that no customers from that city/country were found.
 

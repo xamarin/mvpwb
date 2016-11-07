@@ -198,6 +198,11 @@ var testDS = TestHelper.CreateTestDataset();
 
 internal class TestHelper
     {
+
+        internal static IEnumerable<string> ZipToStrings<T,U>(IEnumerable<T> xs, IEnumerable<U> ys, Func<T,U,string> fn){
+            return xs.Zip(ys, fn);
+        }
+
         internal static DataSet CreateTestDataset()
         {
             DataSet ds = new DataSet();
