@@ -17,9 +17,7 @@ packages:
 
 Xamarin.Forms applications can read and write data to a local SQLite database by using the `SQLite.Net` NuGet package.
 
----
-
-###### Note
+## Initializing the Workbook
 
 To use SQLite.Net in Xamarin Workbooks, you must:
 
@@ -30,10 +28,6 @@ To use SQLite.Net in Xamarin Workbooks, you must:
 * Add a `using` directive to reference the `SQLite` assembly.
 
 These steps have been performed in this workbook.
-
----
-
-## Initializing the Workbook
 
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 

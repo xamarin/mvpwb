@@ -13,9 +13,7 @@ packages:
 
 The Xamarin.Forms `Map` view displays a map using the native map for the platform. This provides a fast, familiar maps experience for users.
 
----
-
-###### Note
+## Initializing the Workbook
 
 To use maps in Xamarin Workbooks, you must:
 
@@ -25,10 +23,6 @@ To use maps in Xamarin Workbooks, you must:
 * Call the `Xamarin.FormsMaps.Init` method, after the `Xamarin.Forms.Forms.Init` method, to initialize `Xamarin.Forms.Maps`.
 
 These steps have been performed in this workbook.
-
----
-
-## Initializing the Workbook
 
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
