@@ -146,7 +146,7 @@ Because no row or column was specified, the `BoxView` occupies the same cell as 
 
 ## Drawing an Empty Box
 
-Use a single-cell `Grid` for a parent to multiple `BoxView` elements that combine to form a simple image of some sort. The first step is to give this `Grid` a specific size. 
+Use a single-cell `Grid` for a parent to multiple `BoxView` elements that combine to form a simple image of some sort. The first step is to give this `Grid` a specific size.
 
 TODO: Rename grid1 —> ?
 
@@ -217,3 +217,121 @@ for (int i = 0; i < 100; i++)
 
 }
 ```
+
+## Drawing a Circle
+
+If you want to draw an unfilled circle, it’s a whole different strategy of piecing together tiny rotated BoxView elements used as short lines that comprise the circle. Here’s a single-cell `Grid` containing 60 `BoxView` elements, each of which is 6 degrees of the complete circle:
+
+```csharp
+const double radius = 50;
+const double thickness = 3;
+const int count = 60;
+
+Grid emptyCircleGrid = new Grid
+{
+    WidthRequest = 2 * radius,
+    HeightRequest = 2 * radius,
+    HorizontalOptions = LayoutOptions.Center
+};
+stackLayout.Children.Add(emptyCircleGrid);
+
+for (int i = 0; i < count; i++)
+{
+    emptyCircleGrid.Children.Add(new BoxView
+    {
+        Color = Color.Accent,
+        HeightRequest = thickness,
+        WidthRequest = 2 * Math.PI * radius / count,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Start
+    });
+}
+```
+
+All 60 `BoxView` elements are horizontally centered at the top of the `Grid`. They need to be rotated into position to form a circle.
+
+The easy part is the rotation angle. If there are 60 `BoxView` elements, the rotation angle for each successive `BoxView` increases in increments of 360 degrees divided by 60: 0 degrees, 6 degrees, 12, 18, and so forth up to 354 degrees.
+
+The tricky part is that each `BoxView` needs to be rotated around the center of the circle, and that center is 47 units (`radius` minus `thickness`) *below* each `BoxView`.
+
+The `AnchorX` and `AnchorY` propertiesKelvin\*1831 define the center around which rotation occurs, but these values are relative to the element. Both `AnchorX` and `AnchorY` have default values of 0.5, which means that by default, rotation is around the center of the element itself.
+
+The default AnchorX setting is fine, but AnchorY needs to be set `radius` units from the top of the element, relative to the height of the element itself, or `radius / thickness`:
+
+```csharp
+for (int i = 0; i < count; i++)
+{
+    View view = emptyCircleGrid.Children[i];
+    view.AnchorY = radius / thickness;
+    view.Rotation = i * 360 / count;
+}
+```
+
+How low does `count` have to be before it stops looking like a circle? And what happens when you set `count` to a fairly low number like 5 or 6?
+
+TK
+
+## Rotating Spokes
+
+```csharp
+const double radius = 100;
+const double thickness = 3;
+static readonly Point center = new Point(radius, radius);
+const int spokeCount = 24;
+
+var spokeLayout = new AbsoluteLayout
+{
+    WidthRequest = 2 * radius,
+    HeightRequest = 2 * radius,
+    HorizontalOptions = LayoutOptions.Center
+};
+stackLayout.Children.Add(spokeLayout);
+
+for (int i = 0; i < spokeCount; i++)
+{
+    double degrees = 360 * i / spokeCount;
+    double radians = Math.PI * degrees / 180;
+    double x = center.X + radius / 2 * Math.Cos(radians);
+    double y = center.Y + radius / 2 * Math.Sin(radians);
+    Point boxViewCenter = new Point(x, y);
+
+    var boxView = new BoxView
+    {
+        Color = Color.Accent,
+        WidthRequest = radius,
+        HeightRequest = thickness,
+        Rotation = degrees 
+
+    };
+    Size boxViewSize = new Size(radius, thickness);
+    Point boxViewOrigin = boxViewCenter - boxViewSize * 0.5;
+
+
+    spokeLayout.Children.Add(boxView, new Rectangle(boxViewOrigin, boxViewSize));
+
+}
+```
+
+```csharp
+new Animation((t) => spokeLayout.Rotation = 360 * t).Commit(page, "spokeRotate", length: 5000, repeat: () => true);
+```
+
+```csharp
+double[] rotation = new double[spokeCount];
+
+for (int i = 0; i < spokeCount; i++)
+{
+    View view = spokeLayout.Children[i];
+    rotation[i] = view.Rotation;
+}
+
+new Animation((t) =>
+{
+    for (int i = 0; i < spokeCount; i++)
+    {
+        View view = spokeLayout.Children[i];
+        view.Rotation = rotation[i] + 360 * t;
+    }
+}).Commit(page, "spokesRotate", length: 5000, repeat: () => true);
+```
+
