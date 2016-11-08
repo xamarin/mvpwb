@@ -12,7 +12,7 @@ UILabel is contained within the `UIKit`namespace, so make sure to add this using
 using UIKit;
 ```
 
-You can create a new label by simply instantiating it, and passing in a frame. The frame is where the control will be placed on the screen:
+You can create a new label by instantiating it and passing in a frame. The frame is where the control will be placed on the screen:
 
 ```csharp
 var firstLabel = new UILabel(new CGRect(100, 100, 300, 100))
@@ -45,11 +45,11 @@ In iOS, the User Experience is controlled by instances of `UIViewController`and 
 
 ## Appearance
 
-There are many properties that can be added to a label to adjust its appearance.
+Many properties can be added to a label to adjust its appearance.
 
-The `ShadowColor`property can be used to add a shadow effect to any label. In addition, the `ShadowOffset`can be used. This offsets the shadow, in points, from the label where the label is at (0,0). Positive numbers will offset the shadow to the right and down respectively. Negative numbers will offset it to the left and up.
+The `ShadowColor`property can be used to add a shadow effect to any label. The `ShadowOffset`can be used to offset the shadow, in points, from the label where the label is at (0,0). Positive numbers will offset the shadow to the right and down respectively. Negative numbers will offset it to the left and up.
 
-The code below creates a new label, aligns it to the left hand side of the Frame, and creates a shadow effect.
+The code below creates a new label, aligns it to the left-hand side of the Frame, and creates a shadow effect.
 
 ```csharp
 var secondLabel = new UILabel(new CGRect(100,150, 300, 100)){Text = "Another Label"};
@@ -65,7 +65,7 @@ RootViewController.View.AddSubview(secondLabel)
 
 * Adjust the properties above to see how TextAlignment and Shadow’s are used on labels in iOS.
 
-The font and font size can also be adjusted on any label. Refer to the [Enumerate fonts recipe](https://developer.xamarin.com/recipes/ios/standard_controls/fonts/enumerate_fonts/) to view a list of supported fonts on iOS.
+The font and font size can be changed on any label. Refer to the [Enumerate fonts recipe](https://developer.xamarin.com/recipes/ios/standard_controls/fonts/enumerate_fonts/) to view a list of supported fonts on iOS.
 
 In the code below, setting the `AdjustsFontSizeToFitWidth`to `true`constrains the text to the size of the label, regardless of size the font has been set to.
 
@@ -84,7 +84,7 @@ RootViewController.View.AddSubview(thirdLabel)
 
 ## Adjusting the size of a label
 
-The last section introduced the concept of adjusting the text to fit the label. However, quite often you may need to create a long label, or dynamically adjust the size of the label to fit a large amount of text.
+The last section introduced the concept of changing the text to fit the label. However, you may need to create a long label, or dynamically adjust the size of the label to fit a large amount of text.
 
 The code below creates a new label, with a static frame, and multiline text:
 
@@ -97,7 +97,7 @@ This creates a new label, whose text is truncated at the rightmost edge, as illu
 
 ![truncated](longLabel.png "truncated")
 
-The truncation is caused because the default number of lines for a label is 1. This can be set to any int value, but setting it to 0 will allow the label to display as many lines as it needs to. SizeToFit can also be called on the label, allowing the view to resize to use the most appropriate amount of space. The code below shows how to do this:
+The truncation is caused because the default number of lines for a label is 1. The `Line` property can be set to any int value, but setting it to 0 will allow the label to display as many lines as it needs to. SizeToFit can also be called on the label, allowing the view to resize to use the most appropriate amount of space. The code below shows how to do this:
 
 ```csharp
 longLabel.Lines = 0;
@@ -106,7 +106,7 @@ longLabel.SizeToFit();
 
 ## Responding to Touch Events
 
-In some sceanarios, you may wish to respond to user interaction in your app. Implementing this is relatively simple. First, create a new UITapGestureRecognizer, which will contain all the actions that you want to call when a tap is recongized.
+In some scenarios, you may wish to respond to user interaction in your app. Implementing this is fairly straightforward. First, create a new UITapGestureRecognizer, which will contain all the actions that you want to call when a tap is recognized.
 
 ```csharp
 var eventLabel = new UITapGestureRecognizer(() => {

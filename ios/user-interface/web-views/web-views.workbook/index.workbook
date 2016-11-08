@@ -6,7 +6,7 @@ platforms:
 
 # Web Views in iOS
 
-Apple has released a number of ways for app developers to incorporate web view functionality in their apps. Most users utilize the built-in Safari web browser on their iOS device, and therefore expect that web-view functionality from other apps is consistant with this experience.
+Apple has released a number of ways for app developers to incorporate web view functionality in their apps. Most users utilize the built-in Safari web browser on their iOS device and therefore expect that web-view functionality from other apps is consistent with this experience.
 
 This workbook will explore opening Safari from inside an app, as well as the following web views provided by Apple:
 
@@ -38,7 +38,7 @@ NSUrl url = new NSUrl("https://developer.xamarin.com");
 
 ## UIWebView
 
-* `UIWebView` is Apple's legacy way of providing web content in your app. It was released in iOS 2.0, and has been deprecated as of 8.0.
+* `UIWebView` is Apple's legacy way of providing web content in your app. It was released in iOS 2.0 and has been deprecated as of 8.0.
 
 * If you plan to support iOS versions earlier than 8.0, you will have to use `UIWebView`.
 
@@ -56,11 +56,11 @@ webView.LoadRequest(new NSUrlRequest(url));
 
 * Uses the Nitro Javascript engine, the same engine used by mobile Safari.
 
-* WKWebView should always be used over UIWebView were possible due to the increased performance, built in user-friendly gestures, and the ease of interaction between the web page and your app.
+* WKWebView should always be used over UIWebView were possible due to the increased performance, built-in user-friendly gestures, and the ease of interaction between the web page and your app.
 
 * `WKWebView` can be added to your app in an almost identical way to UIWebView, however as the developer you have much more control over the UI/UX and functionality.
 
-* Creating and displaying the web view object will display the requested page, however you can control how the view is presented, how the user can navigate, and how the user exits the view.
+* Creating and displaying the web view object will display the requested page, however, you can control how to present the view, how the user can navigate, and how the user exits the view.
 
 ```csharp
 var webkitWebView = new WKWebView (tabController.WKWebTab.View.Frame, new WKWebViewConfiguration ());
@@ -84,7 +84,7 @@ webkitWebView.LoadRequest (request);
 
 * Provides forward and back navigation buttons, allowing users to navigate through a stack of web pages.
 
-* Provides the user with an address bar giving them the peace of mind that they are on the expected web page. The address bar does not allow the user to change the url.
+* Provides the user with an address bar giving them the peace of mind that they are on the expected web page. The address bar does not allow the user to change the URL.
 
 * SFSafariViewController cannot be customized.
 
@@ -103,7 +103,7 @@ safariButton.TouchUpInside += delegate{
 
 ## Safari
 
-Navigating users away from an app to Safari should generally always be avoided. Most users will not expect navigation outside of theapplication, so if they navigate away from the app, users may never return it, essentially killing engagement.
+Navigating users away from an app to Safari should generally be avoided. Most users will not expect navigation outside of the application, so if they navigate away from the app, users may never return it, therefore killing engagement with your app.
 
 iOS 9 improvements allow the user to easily return to the app through a back button that is provided in the top left corner of the Safari page.
 

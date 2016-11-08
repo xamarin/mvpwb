@@ -6,9 +6,9 @@ packages: []
 
 # UIImage
 
-UIImage allows for image representation in UIKit, which provides support for loading, saving, and manipulating images. Images are used throughout iOS for a variety of different purposes – Icon sets, within a UIKit control etc. In addition, they can be used with various frameworks provided by iOS such as UIKit, Core Graphics, Image IO, Core Animation. Each framework provides ways to manipulate and interact with images.
+UIImage allows for image representation in UIKit, which provides support for loading, saving, and manipulating images. iOS uses images for a variety of different purposes – Icon sets, within a UIKit control, etc. They are also used with various frameworks provided by iOS such as UIKit, Core Graphics, Image IO, Core Animation. Each framework provides ways to manipulate and interact with images.
 
-Working with Images can be an exhaustive topic. This guide will therefore focus only on using UIImage within UIKit, and in particular using it with a UIImageView – a UIView that can render a single image, or animate a series of images.
+Working with Images can be an exhaustive topic. TThis guide will, therefore,focus only on using UIImage within UIKit, and in particular using it with a UIImageView – a UIView that can render a single image, or animate a series of images.
 
 For more information on using images in iOS refer to the [Working with Images](https://developer.xamarin.com/guides/ios/application_fundamentals/working_with_images/) guide.
 
@@ -30,9 +30,12 @@ var image = UIImage.FromFile("Xamarin_logo.png");
 
 #### Guidance on Using FromBundle vs. FromFile
 
-The `UIImage` class includes two static methods for loading images, `FromBundle` and `FromFile.`\
-The `FromBundle` method call is a synchronous (blocking) call that has a number of image loading and management features built-in, such as caching support and automatic handling of image files for various resolutions.\
-`UIImage` also contains the `FromFile` method, which is a lighter-weight alternative to `FromBundle`. It doesn’t use caching and so there is no need to worry about the positive or negative memory implications of caching. Additionally, `FromFile` is asynchronous, so it won’t block the main thread; it lazy-loads images as needed for each to be displayed.\
+The `UIImage` class includes two static methods for loading images, `FromBundle` and `FromFile.`
+
+The `FromBundle` method call is a synchronous (blocking) call that has some image loading and management features built-in, such as caching support and automatic handling of image files for various resolutions.
+
+`UIImage` also contains the `FromFile` method, which is a lighter-weight alternative to `FromBundle`. It doesn’t use caching and so there is no need to worry about the positive or negative memory implications of caching. Additionally, `FromFile` is asynchronous, so it won’t block the main thread; it lazy-loads images as needed for each to be displayed.
+
 The following list summarizes the differences between `FromBundle` and `FromFile`:
 
 * `FromFile` is asynchronous; whereas `FromBundle` is synchronous.
@@ -43,7 +46,7 @@ The following list summarizes the differences between `FromBundle` and `FromFile
 
 * `FromFile` provides no built-in caching; whereas `FromBundle` automatically caches an image after it is loaded.
 
-To display the image created above in a user interface the image, simply pass it to a UIImageView:
+To display the image created above in a user interface the image, pass it to a UIImageView:
 
 ```csharp
 var imageView = new UIImageView(image);
@@ -59,7 +62,7 @@ Notice that the size of the imageView’s frame is set to the same size as the i
 
 ![](image1.png)
 
-There are a number of options that can be used to allow the user to view the image, including using a scroll view and manually setting the the `Frame `property.
+Some options can be used to allow the user to view the image, including using a scroll view and manually setting the the `Frame` property.
 
 To add a scroll view that contains an image view first instantiate a new `UIScrollView `setting the `Frame `size to the `Width `and `Height`, and the `ContentSize `equal to the `imageViews`’s Image size. The code to do this, is shown below:
 
@@ -77,9 +80,9 @@ imageView.Frame = new CGRect(0,50,UIScreen.MainScreen.Bounds.Width, 122)
 
 ## Scaling the Image
 
-Image views use the `ContentMode `property and the image object to best determind how the image should be displayed. This allows the image to be scaled, sized to fit or positioned as neceassry. 
+Image views use the `ContentMode` property and the image object to best determine how the image should be displayed, allowing the image to be scaled, sized to fit or positioned as necessary. 
 
-First, create the Image and ImageView that you wish to work with.
+First, create the Image and ImageView with which you wish to work:
 
 ```csharp
 var image2 = UIImage.FromFile("Xamarin_logo.png");
@@ -107,7 +110,7 @@ RootViewController.View.AddSubview(imageView2)
 
 #### 👍Try it now!
 
-* Change the UIViewContentMode properly. Notice how the image changes in comparison to the frame.
+* Change the UIViewContentMode property. Notice how the image changes in comparison to the frame.
 
 ## Animating an ImageView
 
@@ -128,7 +131,7 @@ imageXamView.AnimationImages = new UIImage[]{
                             };
 ```
 
-The frame rate is set by the AnimationDuration property. This property specifies the amount of time it takes to go through one cycle of the image. In this animation the duration is 1 second, this means that each image will appear for 0.5s each cycle.
+The `AnimationDuration` property sets the frame rate. This property specifies the amount of time it takes to go through one cycle of the image. In this animation the duration is 1 second, this means that each image will appear for 0.5s each cycle.
 
 ```csharp
 imageXamView.AnimationDuration = 1
@@ -157,8 +160,8 @@ To stop the animation, call the `StopAnimating()` method.
 
 There are a few more points you should be aware of regarding images and iOS:
 
-* By default OS X uses a case-insensitive file system, which means that the iOS Simulator is also case-insensitive. An iOS device however, uses a **case-sensitive** file system. So code that runs on the simulator may fail to run correctly on device.
+* By default OS X uses a case-insensitive file system, which means that the iOS Simulator is also case-insensitive. An iOS device, however, uses a **case-sensitive** file system. So code that runs on the simulator may fail to run correctly on the device.
 
 * You cannot name a developer created folder `Resources`, as it is reserved in iOS and the application will crash.
 
-* Set the build action to **BundleResource** if you want an image to be included in the application bundle. Generally, Xamarin Studio will set this automatically for you, but if you get a runtime error that says the image cannot be found, double-check this.
+* Set the build action to **BundleResource** if you want an image to be included in the application bundle. Xamarin Studio will set this automatically for you, but if you get a runtime error that says the image cannot be found, double-check this.

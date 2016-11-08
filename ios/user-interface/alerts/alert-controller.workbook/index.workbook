@@ -14,11 +14,11 @@ Unlike the classes it replaced, which are subclasses of `UIView`, `UIAlertContro
 
 * **UIAlertControllerStyleActionSheet**
 
-  * pre iOS 8 this would have been a UIActionSheet
+  * Pre-iOS 8 this would have been a UIActionSheet
 
 * **UIAlertControllerStyleAlert**
 
-  * Pre iOS 8 this would have been UIAlertView
+  * Pre-iOS 8 this would have been UIAlertView
 
 There are three steps to take when creating an AlertController:
 
@@ -36,7 +36,7 @@ There are three steps to take when creating an AlertController:
 
 * Present the View Controller
 
-As this alerts will be triggered on a button touch event (a common sceanario in iOS), load the \`UIButtons\`:
+As this alert is triggered by a button touch event (a typical scenario in iOS), load the \`UIButtons\`:
 
 ```csharp
 #load "alert_controller.csx"
