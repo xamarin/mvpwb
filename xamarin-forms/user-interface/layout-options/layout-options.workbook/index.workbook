@@ -37,7 +37,7 @@ The default value of a view's `HorizontalOptions` and `VerticalOptions` properti
 
 ---
 
-## Initializing Xamarin.Forms
+## Initializing the Workbook
 
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 

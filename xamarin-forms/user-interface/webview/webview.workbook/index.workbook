@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `WebView` view displays web and HTML content in an application.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

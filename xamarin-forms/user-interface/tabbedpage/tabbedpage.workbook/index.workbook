@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `TabbedPage` view descends from `MultiPage<T>` and presents a number of pages in a tabbed layout.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Switch` view allows a user to toggle between two states.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

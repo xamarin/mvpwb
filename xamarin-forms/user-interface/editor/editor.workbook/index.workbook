@@ -2,11 +2,16 @@
 uti: com.xamarin.workbook
 platforms:
 - iOS
+packages:
+- id: Xamarin.Forms
+  version: 2.3.2.127
 ---
 
 # Entering Multi-Line Text
 
 The Xamarin.Forms `Editor` view is used for multi-line text input.
+
+## Initializing the Workbook
 
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 

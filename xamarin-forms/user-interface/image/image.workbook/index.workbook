@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Image` view displays images on a page. The image source can be local or remote.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

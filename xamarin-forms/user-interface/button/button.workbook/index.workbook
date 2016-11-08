@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Button` view initiates an action when the user presses it. The `Button` displays text, with or without an accompanying image,
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp
@@ -52,6 +54,7 @@ button.HorizontalOptions = LayoutOptions.Center;
 ```
 
 In addition, the `VerticalOptions` property can be set to center the `Button` vertically.
+
 
 ## Responding to Clicks
 
@@ -147,9 +150,7 @@ button.FontSize = 30;
 ## 👍 Try it now!
 
 * Replace the `button` event handler with a lambda expression.
-
 * Add an image to `button2` by setting its `Image` property.
-
 * Right align a `Button` by setting its `HorizontalOptions` property to `End`.
 
 ## Further Reading

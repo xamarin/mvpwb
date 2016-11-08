@@ -11,6 +11,8 @@ packages:
 
 Xamarin.Forms provides two pop-up like user interface elements: an alert and an action sheet. An alert is a modal pop-up to alert the user, or to ask simple question of them. An action sheet is a modal pop-up that' used to guide the user through a task.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

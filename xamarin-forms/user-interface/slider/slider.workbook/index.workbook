@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Slider` view is used to input a range of values.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp
@@ -73,4 +75,3 @@ blueSlider.ValueChanged += updateColor;
 ## 👍 Try it now!
 
 * Change the `colorLabel` text value to display the R, G, and B values.
-

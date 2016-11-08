@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Entry` view is used for single-line text input, and can also be used as a password field.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

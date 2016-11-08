@@ -19,7 +19,7 @@ The following diagram illustrates the two concepts:
 
 ![](margins-and-padding.png)
 
-## Initializing Xamarin.Forms
+## Initializing the Workbook
 
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 

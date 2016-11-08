@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Picker` view is used for selecting an item from a list.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp

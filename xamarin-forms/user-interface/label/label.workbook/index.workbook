@@ -11,6 +11,8 @@ packages:
 
 The Xamarin.Forms `Label` view is used for displaying single and multi-line text.
 
+## Initializing the Workbook
+
 In order to run a Xamarin.Forms workbook, some initialization code must be executed:
 
 ```csharp
@@ -123,9 +125,7 @@ label.HorizontalTextAlignment = TextAlignment.Center;
 ## 👍 Try it now!
 
 * Make the text displayed by the `Label` to be bold and italic. This can be achieved with the bitwise OR operator (|).
-
 * Make the text displayed by the `Label` use `MiddleTruncation` line truncation.
-
 * Make the `Label` text right justified by setting the `End` member of the `TextAlignment` enumeration.
 
 ## Further Reading
