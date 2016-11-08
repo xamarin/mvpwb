@@ -100,6 +100,14 @@ public SQLiteConnection GetConnection()
 
 This method places the SQLite database file in the **Library** folder within the application's sandbox.
 
+---
+
+###### Note
+
+In a Xamarin Studio or Visual Studio Xamarin.Forms solution, the `GetConnection` method should reside in the iOS platform project, and be invoked from the Xamarin.Forms project using the `DependencyService` class. For more information, see [Working with a Local Database](https://developer.xamarin.com/guides/xamarin-forms/working-with/databases/).
+
+---
+
 The `GetConnection` method is invoked as follows:
 
 ```csharp
