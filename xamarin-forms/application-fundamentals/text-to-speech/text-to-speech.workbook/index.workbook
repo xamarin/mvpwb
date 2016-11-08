@@ -96,7 +96,7 @@ When the `Button` is clicked, the platform-specific `Speak` method translates th
 
 * Increase the speech speed.
 
-* Change the speech oice.
+* Change the speech voice.
 
 ## Further Reading
 
