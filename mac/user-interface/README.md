@@ -45,3 +45,9 @@ This workbook will cover working with a Toolbar (`NSToolbar`) in a Xamarin.Mac a
 This workbook will cover the steps required to build a Xamarin.Mac app's User Interface directly from C# code without using a Xcode's Interface Builder `.storyboard` or `.xib` file.
 
 ![](ui-in-code/screenshots/Intro01.png)
+
+## [How to Build a Web Browser in Xamarin.Mac](webbrowser)
+
+This workbook will cover the steps required to build a mini, multi-windowed web browser in a Xamarin.Mac app. By going through the steps in this workbook, the reader will gain insights and skills required to work with many elements of a standard macOS app such as Menus, Windows, Window Controllers, Views, View Controllers, Toolbars, Text Field, Buttons and the Xcode Interface Builder Storyboard files used to define them.
+
+![](webbrowser/screenshots/Intro01.png)
