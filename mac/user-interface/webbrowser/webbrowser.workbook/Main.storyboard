@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C32f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C41b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
         <plugIn identifier="com.apple.WebKitIBPlugin" version="11542"/>
@@ -345,40 +345,76 @@
                                     <items>
                                         <menuItem title="Microsoft" image="Box.png" id="vKa-zY-5Hn">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="fSP-dU-Ggr"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Bing" image="Box.png" id="kxX-NY-JK2">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="mQP-Mk-4gc"/>
+                                            </connections>
                                         </menuItem>
-                                        <menuItem title="Linked In" image="Box.png" id="QZn-3P-tEo">
+                                        <menuItem title="LinkedIn" image="Box.png" id="QZn-3P-tEo">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="2cQ-nv-mwr"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="msn" image="Home.png" id="08q-20-w18">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="qaI-69-wZm"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Skype" image="Box.png" id="HdX-3V-svv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="bWn-3e-noh"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="dPK-cR-aAr"/>
                                         <menuItem title="Amazon" image="Tag.png" id="ItZ-1h-ZVC">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="cV0-pM-7GJ"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Apple" image="Tag.png" id="O6M-R9-jqr">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="Goc-3G-ULJ"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Digg" image="Tag.png" id="hh2-jI-elv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="k4d-df-Cx3"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Facebook" image="Tag.png" id="KZJ-wG-85K">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="E8J-j4-mJs"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Google" image="Tag.png" id="FeN-pS-hcx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="P5M-R4-t9w"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Twitter" image="Tag.png" id="TEK-90-axA">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="F12-68-itQ"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="YouTube" image="Tag.png" id="gj2-Xc-K6r">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ShowFavoriteWebsite:" target="Ady-hI-5gd" id="lsi-nv-KnQ"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -466,18 +502,66 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="ZFI-xT-Jm1"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="wHo-OS-uh3"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Cem-ZC-8bH"/>
-                                <toolbarItem implicitItemIdentifier="1547D2DF-32F3-4FC4-A9AE-D466BCC6F8E4" label="Amazon" paletteLabel="Amazon" tag="-1" image="Amazon.png" id="dPW-ZT-pcq"/>
-                                <toolbarItem implicitItemIdentifier="B05E4456-78B5-412C-A0FD-C7E2C3E0236C" label="Apple" paletteLabel="Apple" tag="-1" image="Apple.png" id="YUh-IV-Zpw"/>
-                                <toolbarItem implicitItemIdentifier="1C38B21C-7137-4D4A-B01B-13713298396E" label="Digg" paletteLabel="Digg" tag="-1" image="Digg.png" id="B0z-Mb-9d1"/>
-                                <toolbarItem implicitItemIdentifier="09236645-7528-4CBB-A7F5-3C76BA448C9D" label="Facebook" paletteLabel="Facebook" tag="-1" image="Facebook.png" id="qWB-MN-xVr"/>
-                                <toolbarItem implicitItemIdentifier="65AF879B-4DE2-4738-A582-21D81361E0E2" label="Google" paletteLabel="Google" tag="-1" image="Google.png" id="Htp-Pu-ab4"/>
-                                <toolbarItem implicitItemIdentifier="5E3D8138-AE46-4F69-A70B-D263D2D00358" label="LinkedIn" paletteLabel="LinkedIn" tag="-1" image="Linkedin.png" id="EUh-kv-KbF"/>
-                                <toolbarItem implicitItemIdentifier="395C3A39-3490-4C19-B8C0-5F3F6CE3F468" label="Microsoft" paletteLabel="Microsoft" tag="-1" image="Microsoft.png" id="szq-cJ-BOy"/>
-                                <toolbarItem implicitItemIdentifier="85CD9709-5DE5-4809-BCF2-6558182DA39E" label="msn" paletteLabel="msn" tag="-1" image="msn.png" id="lQL-hA-xOa"/>
-                                <toolbarItem implicitItemIdentifier="17CC10EA-E702-43F5-AD0B-5E4DD29730EA" label="Skype" paletteLabel="Skype" tag="-1" image="Skype.png" id="eXM-Ua-zKI"/>
-                                <toolbarItem implicitItemIdentifier="E1D47F9D-156E-4206-9117-91999236E36D" label="Twitter" paletteLabel="Twitter" tag="-1" image="Twitter.png" id="a2k-Ac-pi7"/>
-                                <toolbarItem implicitItemIdentifier="F2990B71-7DAF-4192-9928-0E0674579B5B" label="YouTube" paletteLabel="YouTube" tag="-1" image="YouTube.png" id="lvW-IH-098"/>
-                                <toolbarItem implicitItemIdentifier="D7C2573B-B603-4231-AA51-36D8C67CAA44" label="Bing" paletteLabel="Bing" tag="-1" image="Bing.png" id="gGl-iC-U8N"/>
+                                <toolbarItem implicitItemIdentifier="1547D2DF-32F3-4FC4-A9AE-D466BCC6F8E4" label="Amazon" paletteLabel="Amazon" tag="-1" image="Amazon.png" id="dPW-ZT-pcq">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="JxO-pL-KvU"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="B05E4456-78B5-412C-A0FD-C7E2C3E0236C" label="Apple" paletteLabel="Apple" tag="-1" image="Apple.png" id="YUh-IV-Zpw">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="YxG-KB-TL1"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="1C38B21C-7137-4D4A-B01B-13713298396E" label="Digg" paletteLabel="Digg" tag="-1" image="Digg.png" id="B0z-Mb-9d1">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="1hg-mU-72g"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="09236645-7528-4CBB-A7F5-3C76BA448C9D" label="Facebook" paletteLabel="Facebook" tag="-1" image="Facebook.png" id="qWB-MN-xVr">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="eOR-KX-wUt"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="65AF879B-4DE2-4738-A582-21D81361E0E2" label="Google" paletteLabel="Google" tag="-1" image="Google.png" id="Htp-Pu-ab4">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="fmB-i0-GkR"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="5E3D8138-AE46-4F69-A70B-D263D2D00358" label="LinkedIn" paletteLabel="LinkedIn" tag="-1" image="Linkedin.png" id="EUh-kv-KbF">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="rij-vf-Sgo"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="395C3A39-3490-4C19-B8C0-5F3F6CE3F468" label="Microsoft" paletteLabel="Microsoft" tag="-1" image="Microsoft.png" id="szq-cJ-BOy">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="blX-Av-Dil"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="85CD9709-5DE5-4809-BCF2-6558182DA39E" label="msn" paletteLabel="msn" tag="-1" image="msn.png" id="lQL-hA-xOa">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="CBt-df-Jvj"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="17CC10EA-E702-43F5-AD0B-5E4DD29730EA" label="Skype" paletteLabel="Skype" tag="-1" image="Skype.png" id="eXM-Ua-zKI">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="G3y-gO-PJf"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="E1D47F9D-156E-4206-9117-91999236E36D" label="Twitter" paletteLabel="Twitter" tag="-1" image="Twitter.png" id="a2k-Ac-pi7">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="R0H-tp-6Dk"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="F2990B71-7DAF-4192-9928-0E0674579B5B" label="YouTube" paletteLabel="YouTube" tag="-1" image="YouTube.png" id="lvW-IH-098">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="J4h-Z9-RtW"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="D7C2573B-B603-4231-AA51-36D8C67CAA44" label="Bing" paletteLabel="Bing" tag="-1" image="Bing.png" id="gGl-iC-U8N">
+                                    <connections>
+                                        <action selector="ShowFavoriteWebsite:" target="Oky-zY-oP4" id="AIE-G3-aQm"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="szq-cJ-BOy"/>

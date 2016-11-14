@@ -44,7 +44,7 @@ Workbooks don’t natively support macOS Storyboards, so the first thing that wi
 #load "StoryboardResources.csx"
 ```
 
-Because of the way that macOS handles Storyboards and the way that workbooks function, this library unfortunately cannot support Actions and provides support for Containment Segues only.
+Because of the way that macOS handles Storyboards and the way that workbooks function, unfortunately this library only provides support for Containment Segues.
 
 Additionally, Outlets cannot be defined by Control-Dragging as normal (because there is no `.h` header file to attach to), so a few different techniques will need to be used to define Outlets in Interface Builder for workbooks:
 
@@ -56,7 +56,7 @@ Additionally, Outlets cannot be defined by Control-Dragging as normal (because t
 
 Also, because of the way workbooks function, loading and instantiating Window and View Controllers  is done using methods of the `StoryboardInflator` helper class as opposed to using the typical `NSStoryboard` methods. For more information, please see our [Loading a Storyboard from Code](https://developer.xamarin.com/guides/mac/platform-features/storyboards/indepth/#Loading_from_Code) documentation.
 
-With these differences aside, after the Windows and View Controllers are loaded and the Outlets are bound, they are used same way as Windows, View Controllers and Outlets created and loaded the typical way in a normal macOS app. So the knowledge gained here can be used when building a regular Xamarin.Mac app project.
+With these differences aside, after the Windows and View Controllers are loaded and the Outlets and Actions are bound, they are used same way as Windows, View Controllers, Outlets and Actions created and loaded the typical way in a normal macOS app. So the knowledge gained here can be used when building a regular Xamarin.Mac app project.
 
 ### Compiling the Storyboard
 
@@ -155,7 +155,7 @@ public class MainViewController : NSViewController {
 		};
 
         // Display the Home website
-        ShowFavoriteWebsite("msn","http://msn.com");
+        ShowFavoriteWebsite("msn");
     }
     #endregion
 
@@ -169,7 +169,49 @@ public class MainViewController : NSViewController {
         WebBrowser.MainFrame.LoadRequest(request);
     }
 
-    public void ShowFavoriteWebsite(string name, string url) {
+    public void ShowFavoriteWebsite(string name) {
+
+        var url = "";
+
+        // Set URL based on the favorite website name
+        switch(name){
+        case "Amazon":
+            url = "http://amazon.com";
+            break;
+        case "Apple":
+            url = "http://apple.com";
+            break;
+        case "Bing":
+            url = "http://bing.com";
+            break;
+        case "Digg":
+            url = "http://digg.com";
+            break;
+        case "Facebook":
+            url = "http://facebook.com";
+            break;
+        case "Google":
+            url = "http://google.com";
+            break;
+        case "LinkedIn":
+            url = "http://linkedin.com";
+            break;
+        case "Microsoft":
+            url = "http://microsoft.com";
+            break;
+        case "msn":
+            url = "http://msn.com";
+            break;
+        case "Skype":
+            url = "http://skype.com";
+            break;
+        case "Twitter":
+            url = "http://twitter.com";
+            break;
+        case "YouTube":
+            url = "http://youtube.com";
+            break;
+        }
 
         // Update URL bar and show website
         URLField.StringValue = url;
@@ -224,44 +266,6 @@ using WebKit;
 
 public class MainWindowController : NSWindowController {
 
-    #region Outlets
-    [Outlet]
-    public NSToolbarItem AmazonToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem AppleToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem BingToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem DiggToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem FacebookToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem GoogleToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem LinkedInToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem MicrosoftToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem msnToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem SkypeToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem TwitterToolbarItem {get; set;}
-
-    [Outlet]
-    public NSToolbarItem YouTubeToolbarItem {get; set;}
-    #endregion
-
     #region Computed Properties
     public MainViewController ViewController {get; set;}
     #endregion
@@ -277,60 +281,20 @@ public class MainWindowController : NSWindowController {
         // Initialize the window after it has loaded
         Window.Title = "Untitled";
 
-        // Wireup controls
-        AmazonToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Amazon","http://amazon.com");
-        };
+    }
+    #endregion
 
-        AppleToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Apple","http://apple.com");
-        };
-
-        BingToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Bing","http://bing.com");
-        };
-
-        DiggToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Digg","http://digg.com");
-        };
-
-        FacebookToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Facebook","http://facebook.com");
-        };
-
-        GoogleToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Google","http://google.com");
-        };
-
-        LinkedInToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("LinkedIn","http://linkedin.com");
-        };
-
-        MicrosoftToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Microsoft","http://microsoft.com");
-        };
-
-        msnToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("msn","http://msn.com");
-        };
-
-        SkypeToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Skype","http://Skype.com");
-        };
-
-        TwitterToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("Twitter","http://twitter.com");
-        };
-
-        YouTubeToolbarItem.Activated += (sender, e) => {
-            ViewController.ShowFavoriteWebsite("YouTube","http://youtube.com");
-        };
+    #region Custom Actions
+    [Action ("showFavoriteWebsite:")]
+    public void ShowFavoriteWebsite (Foundation.NSObject sender) {
+        var item = sender as NSToolbarItem;
+        ViewController.ShowFavoriteWebsite(item.Label);
     }
     #endregion
 }
 ```
 
-Let’s take a look at what this code is doing in detail. Just like the `MainViewController` above, several Outlets have been defined that relate to the UI elements as they were laid out in Xcode’s Interface builder. In this case, it will be the custom Toolbar and Toolbar Items that were attached to the Window:
+Let’s take a look at what this code is doing in detail. A custom `ShowFavoriteWebsite` Action is created and every Toolbar Item in the custom Toolbar is hooked up to it:
 
 ![](Images/UI02.png)
 
@@ -406,46 +370,7 @@ public class AppDelegate : NSApplicationDelegate {
 
     #region Outlets
     [Outlet]
-    public NSMenuItem NewMenuItem {get; set;}
-
-    [Outlet]
     public NSMenuItem FavoritesMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem AmazonMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem AppleMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem BingMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem DiggMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem FacebookMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem GoogleMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem LinkedInMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem MicrosoftMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem msnMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem SkypeMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem TwitterMenuItem {get; set;}
-
-    [Outlet]
-    public NSMenuItem YouTubeMenuItem {get; set;}
     #endregion
 
     #region Constructors
@@ -474,92 +399,47 @@ public class AppDelegate : NSApplicationDelegate {
     }
     #endregion
 
-    #region Private Methods
-    private void ShowFavoriteWebsite(string name, string url) {
+    #region Override Methods
+    public override void DidFinishLaunching (NSNotification notification)
+    {
+        // Initialize app here
+    }
+    #endregion
 
+    #region Custom Actions
+    [Action ("showFavoriteWebsite:")]
+    public void ShowFavoriteWebsite (Foundation.NSObject sender) {
+        var item = sender as NSMenuItem;
         var window = NSApplication.SharedApplication.KeyWindow;
         if (window !=null ) {
             var windowDelegate = window.Delegate as MainWindowDelegate;
             if (windowDelegate!=null) {
-                windowDelegate.ViewController.ShowFavoriteWebsite(name, url);
+                windowDelegate.ViewController.ShowFavoriteWebsite(item.Title);
             } 
         }
-
     }
-    #endregion
 
-    #region Override Methods
-    public override void DidFinishLaunching (NSNotification notification)
-    {
-        
-        // Wire-up Controls
-        NewMenuItem.Activated += (sender, e) => {
-            var windowController = new MainWindowController();
-            var viewContoller = new MainViewController();
+    [Action ("newDocument:")]
+    public void NewDocument (Foundation.NSObject sender) {
+        var windowController = new MainWindowController();
+        var viewContoller = new MainViewController();
 
-            Inflator.InstantiateInitialController(windowController);
-            windowController.Window.Delegate = new MainWindowDelegate(windowController.Window, windowController, viewContoller);
+        Inflator.InstantiateInitialController(windowController);
+        windowController.Window.Delegate = new MainWindowDelegate(windowController.Window, windowController, viewContoller);
 
-            StoryboardBinder.Bind(windowController, viewContoller);
-            windowController.ViewController = viewContoller;
-		};
-
-        AmazonMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Amazon","http://amazon.com");
-        };
-
-        AppleMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Apple","http://apple.com");
-        };
-
-        BingMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Bing","http://bing.com");
-        };
-
-        DiggMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Digg","http://digg.com");
-        };
-
-        FacebookMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Facebook","http://facebook.com");
-        };
-
-        GoogleMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Google","http://google.com");
-        };
-
-        LinkedInMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("LinkedIn","http://linkedin.com");
-        };
-
-        MicrosoftMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Microsoft","http://microsoft.com");
-        };
-
-        msnMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("msn","http://msn.com");
-        };
-
-        SkypeMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Skype","http://skype.com");
-        };
-
-        TwitterMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("Twitter","http://twitter.com");
-        };
-
-        YouTubeMenuItem.Activated += (sender, e) => {
-            ShowFavoriteWebsite("YouTube","http://youtube.com");
-        };
+        StoryboardBinder.Bind(windowController, viewContoller);
+        windowController.ViewController = viewContoller;
     }
     #endregion
 
 }
 ```
 
-Let’s take a look at what this code is doing in detail. First, it creates and exposes several Computed Properties to keep track of the main elements of the app. Again, like the `MainViewController` above, several Outlets have been defined that relate to the UI elements as they were laid out in Xcode’s Interface builder. In this case, it will be the custom Menu and Toolbar Items that were added to the Main Menubar:
+Let’s take a look at what this code is doing in detail. First, it creates and exposes several Computed Properties to keep track of the main elements of the app. Again, like the `MainViewController` above, a `ShowFavoriteWebsite` Action has been defined and attached to the custom Menu Items that were added to the Main Menubar in Interface Builder:
 
 ![](Images/UI03.png)
+
+The `ShowFavoriteWebsite` Action method gets the currently currently Key Window and calls the `ShowFavoriteWebsite` method of its `MainViewController` instance to display the requested web site.
 
 When a new instance of the `AppDelegate` is created, it creates a `StoryboardInflator` to load the specified Storyboard’s bundle into memory (`Inflator = new StoryboardInflator($"{bundleName}.storyboardc");`).
 
@@ -573,11 +453,7 @@ The WindowController is bound to the ViewController using the `StoryboardBinder`
 
 ---
 
-The `DidFinishLaunching` method is called after the app has been started to configure the app. By adding the `NewMenuItem.Activated` event, the New Menu Item will be enabled in the File Menu. When the user selects it, the `StoryboardInflator` helper class is used to open a new Window from the Storyboard (normally this would be done from a `NSStoryboard` class instance).
-
-The `Activated` event is defined for each of the Menu Items in the Favorite menu to display a favorite URL in the Web Browser of the currently Key Window. Again, by defining this event, the Menu Items will be automatically enabled by macOS.
-
-The `ShowFavoriteWebsite` private method gets the currently currently Key Window and calls the `ShowFavoriteWebsite` method of its `MainViewController` instance to display the requested web site.
+The `DidFinishLaunching` method is called after the app has been started to configure the app. By adding the `NewDocument` Action, the New Menu Item will be enabled in the File Menu. When the user selects it, the `StoryboardInflator` helper class is used to open a new Window from the Storyboard (normally this would be done from a `NSStoryboard` class instance).
 
 ---
 

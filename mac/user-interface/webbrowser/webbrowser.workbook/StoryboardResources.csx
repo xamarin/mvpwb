@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Linq;
 using Foundation;
 using AppKit;
+using ObjCRuntime;
 
 // -------------------------------------------------------------------------
 // StoryboardInflator for macOS by Kevin Mullins for Microsoft, Inc.
@@ -168,6 +169,9 @@ public static class StoryboardBinder
 			// Bind image
 			menuItem.Image = BindImage (menuItem.Image);
 
+			// Bind actions
+			BindAction (menuItem.Action, workbookClass, menuItem);
+
 			// Scan sub menus
 			if (menuItem.Submenu != null) {
 				BindMenu (menuItem.Submenu, workbookClass);
@@ -194,6 +198,9 @@ public static class StoryboardBinder
 
 			// Bind Images
 			item.Image = BindImage (item.Image);
+
+			// Bind actions
+			BindAction (item.Action, workbookClass, item);
 		}
 	}
 
@@ -298,17 +305,20 @@ public static class StoryboardBinder
 		if (view is NSButton) {
 			var button = view as NSButton;
 			button.Image = BindImage (button.Image);
+			BindAction (button.Action, workbookClass, button);
 		} else if (view is NSPopUpButton) {
 			var popup = view as NSPopUpButton;
 			foreach (NSMenuItem item in popup.Items ()) {
 				item.Image = BindImage (item.Image);
 			}
+			BindAction (popup.Action, workbookClass, popup);
 		} else if (view is NSSegmentedControl) {
 			var segment = view as NSSegmentedControl;
 			for (nint n = 0; n < segment.SegmentCount; ++n) {
 				var image = segment.GetImage (n);
 				segment.SetImage (BindImage (image), n);
 			}
+			BindAction (segment.Action, workbookClass, segment);
 		} else if (view is NSImageView) {
 			var image = view as NSImageView;
 			image.Image = BindImage (image.Image);
@@ -343,6 +353,87 @@ public static class StoryboardBinder
 			// Yes, save value in class
 			var value = Convert.ChangeType (property, propertyInfo.PropertyType);
 			propertyInfo.SetValue (workbookClass, value);
+		}
+	}
+
+	/// <summary>
+	/// Attempts to bind an object inflated from a compiled Storyboard to an "Action"
+	/// property on the given workbook class. This hack is a workaround since true
+	/// Storyboard Actions are not supported in workbooks.
+	/// </summary>
+	/// <param name="action">The selector that represents the Action to bind.</param>
+	/// <param name="workbookClass">The workbook class being bound to.</param>
+	/// <param name="menuItem">The Menu Item that is the target of the binding.</param>
+	private static void BindAction (Selector action, NSObject workbookClass, NSMenuItem menuItem)
+	{
+		// Anything to process?
+		if (action == null) return;
+
+		// Switch to .NET style method name
+		var actionName = action.Name.Substring(0,1).ToUpper() + action.Name.Substring(1).Replace (":", "");
+
+		// Does the class contain the method?
+		var controllerType = workbookClass.GetType ();
+		var methodInfo = controllerType.GetMethod (actionName);
+		if (methodInfo != null) {
+			// Yes, wireup action to class
+			menuItem.Activated += (sender, e) => {
+				methodInfo.Invoke (workbookClass, new [] { sender });
+			};
+		}
+	}
+
+	/// <summary>
+	/// Attempts to bind an object inflated from a compiled Storyboard to an "Action"
+	/// property on the given workbook class. This hack is a workaround since true
+	/// Storyboard Actions are not supported in workbooks.
+	/// </summary>
+	/// <param name="action">The selector that represents the Action to bind.</param>
+	/// <param name="workbookClass">The workbook class being bound to.</param>
+	/// <param name="toolbarItem">The Toolbar Item that is the target of the binding.</param>
+	private static void BindAction (Selector action, NSObject workbookClass, NSToolbarItem toolbarItem)
+	{
+		// Anything to process?
+		if (action == null) return;
+
+		// Switch to .NET style method name
+		var actionName = action.Name.Substring (0, 1).ToUpper () + action.Name.Substring (1).Replace (":", "");
+
+		// Does the class contain the method?
+		var controllerType = workbookClass.GetType ();
+		var methodInfo = controllerType.GetMethod (actionName);
+		if (methodInfo != null) {
+			// Yes, wireup action to class
+			toolbarItem.Activated += (sender, e) => {
+				methodInfo.Invoke (workbookClass, new [] { sender });
+			};
+		}
+	}
+
+	/// <summary>
+	/// Attempts to bind an object inflated from a compiled Storyboard to an "Action"
+	/// property on the given workbook class. This hack is a workaround since true
+	/// Storyboard Actions are not supported in workbooks.
+	/// </summary>
+	/// <param name="action">The selector that represents the Action to bind.</param>
+	/// <param name="workbookClass">The workbook class being bound to.</param>
+	/// <param name="control">The control that is the target of the binding.</param>
+	private static void BindAction (Selector action, NSObject workbookClass, NSControl control)
+	{
+		// Anything to process?
+		if (action == null) return;
+
+		// Switch to .NET style method name
+		var actionName = action.Name.Substring (0, 1).ToUpper () + action.Name.Substring (1).Replace (":", "");
+
+		// Does the class contain the method?
+		var controllerType = workbookClass.GetType ();
+		var methodInfo = controllerType.GetMethod (actionName);
+		if (methodInfo != null) {
+			// Yes, wireup action to class
+			control.Activated += (sender, e) => {
+				methodInfo.Invoke (workbookClass, new [] { sender });
+			};
 		}
 	}
 	#endregion
