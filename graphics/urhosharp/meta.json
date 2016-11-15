@@ -2,6 +2,7 @@
   "order":{
     "animated-model/animated-model.workbook":"Animated Model",
     "barchart/charts-mac.workbook":"Charts for Mac",
+    "ExploringUrhoCoordinates/ExploringUrhoCoordinates.workbook":"Exploring Urho Coordinates",
     "chemistry/molecules.workbook":"Molecules",
     "physics/physics.workbook":"Physics",
     "planetearth/planetearth-mac.workbook":"Planet Earth for Mac",
