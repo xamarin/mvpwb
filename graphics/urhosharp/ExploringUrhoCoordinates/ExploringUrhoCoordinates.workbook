@@ -9,9 +9,9 @@ platforms:
 
 UrhoSharp is a powerful cross-platform 3D graphics engine that Xamarin and .NET developers can use for games or visualization. This workbook is intended as a basic introduction to UrhoSharp and 3D concepts, focusing on the 3D coordinate system.
 
-Currently, the directory in which a UrhoSharp workbook runs must contain the **urho.dll** library as well as **mono-urho.dll** for running the workbook under Windows using the Windows Presentation Foundation (WPF) and the **libmono-urho.dylib** for running the workbook on the Mac.
+Currently, the directory in which a UrhoSharp workbook runs must contain the **urho.dll** library. In addition, the **mono-urho.dll** library is required for running the workbook under Windows using the Windows Presentation Foundation (WPF) and **libmono-urho.dylib** for running the workbook on the Mac.
 
-The workbook itself only needs to reference **Urho.dll**:
+The workbook itself needs to reference only **Urho.dll**:
 
 ```csharp
 #r "Urho.dll"
@@ -26,16 +26,16 @@ using Urho.Shapes;
 
 If you’re writing a standalone UrhoSharp program using Visual Studio, generally you derive a class from `Application`, and override several methods for all your code, animations, and interaction. The program then instantiates that class and calls the `Run` method on it. The `Run` method is blocking: It doesn’t return until the UrhoSharp application has been terminated.
 
-That architecture would not work very well in an interactive workbook, so a class named `SimpleApplication` is available for workbooks. `SimpleApplication` derives from `Application` and defines an asynchronous static `RunAsync` method that creates the `SimpleApplication` object, performs some initialization, and returns the object, which you can then use for constructing a 3D scene. This `SimpleApplication` class does not appear in the online Urho documentation, but you can examine the [source code](https://github.com/xamarin/urho/blob/master/Bindings/Portable/SimpleApplication.cs).
+That architecture would not work very well in an interactive workbook, so a class named `SimpleApplication` is available for workbooks. `SimpleApplication` derives from `Application` and defines an asynchronous static `RunAsync` method that instantiates the `SimpleApplication` object, performs some initialization, and returns the object, which you can then use for constructing a 3D scene. This `SimpleApplication` class does not appear in the online UrhoSharp documentation, but you can examine the [source code](https://github.com/xamarin/urho/blob/master/Bindings/Portable/SimpleApplication.cs).
 
 To create a UrhoSharp window in a workbook, call the static asynchronous `SimpleApplication.RunAsync` method using `await`. It’s possible to specify some application options at this time, but the easiest options consist of simply a width and height of a window:
 
 ```csharp
-SimpleApplication app = await SimpleApplication.RunAsync(1000, 500);
+SimpleApplication app = await SimpleApplication.RunAsync(1000, 1000);
 app.Input.SetMouseVisible(true, true);
 ```
 
-You should see a window appear on the desktop as the `RunAsync` method completes. The `SetMouseVisible` call ensures that the UrhoSharp window doesn’t take total control of the mouse cursor; otherwise the mouse won’t be visible on your desktop.
+You should see a window appear on the desktop as the `RunAsync` method completes. The `SetMouseVisible` call ensures that the UrhoSharp window doesn’t take total control of the mouse cursor and make it invisible.
 
 ## Inside SimpleApplication
 
@@ -53,9 +53,9 @@ The camera defines how you see 3D objects in the window. The Urho window is simi
 
 All these characteristics (and more) are part of the Urho3D camera.
 
-The use of a camera metaphore is perhaps the biggest difference between 3D graphics and 2D graphics When working with 2D graphics, generally you specify coordinates relative to a screen or canvas to display something. The coordinate values might be pixels or units that convert to pixels.
+The use of a camera metaphor is perhaps the biggest difference between 3D graphics and 2D graphics. When working with 2D graphics, generally you specify coordinates of graphics objects relative to a screen or canvas. The coordinate values might be pixels or units that convert to pixels.
 
-With 3D graphics, what you see depends on the the relative locations of the camera and the 3D objects. Coordinate values are all relative. You can increase or decrease all the coordinates and sizes in a 3D scene by a factor of 10 (for example) and everything will look the same.
+With 3D graphics, what you see on the screen depends on the the relative locations of the camera and the 3D objects. Coordinate values are all relative. You can increase or decrease all the coordinates and sizes in a 3D scene by a factor of 10 (for example) and everything will look the same.
 
 When you use a camera in real life, you know that you can’t take a picture of something behind the camera or otherwise out of its range. Similarly, in working with 3D scenes, you might not see anything in the UrhoSharp window if the 3D objects are not in the range of the camera. Helping you get a feel for this relationship is one of the goals of this workbook.
 
@@ -65,7 +65,7 @@ The other essential object that `SimpleApplication` creates is a light source. T
 
 Urho organizes 3D objects in a tree of nodes. Every node except the root node has a parent, and every node potentially has multiple children. This organization allows you to group related 3D objects and treat them together. For example, you can move a whole group of objects by moving the parent node. Here’s the documentation of the [`Node` class](https://developer.xamarin.com/api/type/Urho.Node/).
 
-`SimpleApplication` creates a root node, which is a special node of type `Scene`, and which is accessible through the `Scene` property of `SimpleApplication`. Both the camera and light are subnodes of the `Scene` node. (You’ll see shortly how you can access the camera and light source in a workbook.)
+`SimpleApplication` creates a root node, which is a special node of type `Scene`, and which is accessible through the `Scene` property of `SimpleApplication`. Both the camera and light are subnodes of the `Scene` node. (You’ll see shortly how you can access the camera and light source from a workbook.)
 
 The next step is to create a child node of `Scene` that will be used throughout this workbook as a parent (and sometimes a grandparent) to other nodes:
 
@@ -73,7 +73,7 @@ The next step is to create a child node of `Scene` that will be used throughout 
 Node mainNode = app.Scene.CreateChild();
 ```
 
-When you experiment with code in a workbook, the code cells can be executed multiple times. Generally you’ll want to avoid nodes being recreated. For that reason, any code in a workbook that creates a new node should be prefaced with code that removes that node if the code has been run previously. That’s the purpose of the `RemoveAllChildren` call that begins the following code cell:
+When you experiment with code in a workbook, the code cells can be executed multiple times. Generally you’ll want to avoid creating nodes that duplicate existing nodes. For that reason, any code in a workbook that creates a new node should be prefaced with code that removes the node created in a previous execution of the code cell. That’s the purpose of the `RemoveAllChildren` call that begins the following code cell:
 
 ```csharp
 // Avoid multiple identical nodes resulting from re-execution of code cell.
@@ -106,7 +106,7 @@ It’s sometimes convenient to speak of the coordinate system as defining *plane
 
 A 3D coordinate point is notated as (x, y, z). The origin of the coordinate system is the point (0, 0, 0).
 
-There’s a good reason why you can’t see the box you created in the Urho window: By default, the camera is positioned at the origin of the 3D coordinate system, and so is the box. The camera is inside the box! The camera needs to come out of the box before it can see the box.
+There’s a good reason why you can’t see the box you created in the Urho window: By default, the camera is positioned at the origin of the 3D coordinate system, and so is the box. The camera is inside the box! The camera and box must be separated before the camera can see the box.
 
 The camera has a direction as well as a position, and by default, the camera is pointing in the direction of the positive Z axis, that is, into the screen. Directions are indicated by 3D vectors, which are notated much like 3D points but generally in a bold typeface. The direction of the camera is the vector **(0, 0, 1)**.
 
@@ -128,11 +128,11 @@ Notice the parameters to the `Vector3` structure are defined as `float` so an `f
 
 And now it looks more like a box. The camera is still pointing straight down the Z axis, but the box has been moved to the right and down, and you can see the top and left side.
 
-You can probably also tell that the rear of the box is a little smaller on the front. By default, the camera employs a perspective projection which results in objects further from the camera being smaller than those closer to the camera. Urho also supports an orthographic camera, which does not employ projection and makes the 3D object look more like those on an engineering drawing.
+You can probably also tell that the rear of the box is a little smaller on the front. By default, the camera employs a perspective projection which results in objects further from the camera being smaller than those closer to the camera. Urho also supports an orthographic camera, which does not employ projection and makes 3D objects look more like those in an engineering drawing.
 
 ## Adjusting the Light
 
-Another contribution to the illusion of three dimensions are the different shades on the three visible sides of the box. `SimpleApplication` creates a directional light source. Judging from the different shades, you might guess that this light points more towards the positive Z axis than the positive X axis. The top looks black, which means that the light source is not pointing down at all.
+Another contribution to the illusion of three dimensions are the different shades on the three visible sides of the box. `SimpleApplication` creates a directional light source that illuminates objects based on the angle of their surfaces to the light vector. Judging from the different shades, you might guess that this light points more towards the positive Z axis than the positive X axis. The top looks black, which means that the light source is not pointing down at all.
 
 However, the light source might be pointing up. Try changing the `Position` to see the bottom of the box.
 
@@ -142,7 +142,7 @@ The `SimpleApplication` class defines a property named `LightNode` that gives yo
 Vector3 lightDirection = app.LightNode.Direction;
 ```
 
-That seems like an odd number, but it confirms your hunch that it points to the back (the Z axis) more to the right (the X axis), and it doesn’t have a Y component. If you check the source code, you’ll find that the light direction is actually set to the vector **(0.5f, 0, 0.8f)**, but internally the value is normalized so that the magnitude of the vector — the square root of (x² \+ y² \+ z²) — equals 1.
+That number confirms your hunch that the light points to the back (the Z axis) more to the right (the X axis), and it doesn’t have a Y component. If you check the source code, you’ll find that the light direction is actually set to the vector **(0.5f, 0, 0.8f)**, but internally the value is normalized so that the magnitude of the vector — the square root of (x² \+ y² \+ z²) — equals 1.
 
 Although the `Direction` property of `Node` does not have a public `set` accessor, you can change the direction of the light by calling the `SetDirection` method:
 
@@ -178,50 +178,46 @@ The box seems to move away. We’ve zoomed out. Try changing it to a value less 
 
 ```csharp
 app.Camera.Fov = 45;
-
-var x = app.Camera.AspectRatio;
 ```
 
-The camera is located at the origin of the 3D coordinate system and pointing in the direction of the positive Z axis. Viewed from above (from the vantage point of the positive Y axis), the camera’s field of view looks like this:
+The camera is located at the origin of the 3D coordinate system and pointing in the direction of the positive Z axis. Viewed from the side (from the vantage point of the negative X axis), the camera’s field of view looks like this:
 
 ![Camera Point of View](Figure3.png)
-
-The diagram would look similar if you view the camera from the side, but with the Y axis rather than the X axis.
 
 The camera is shown as a little box on the origin, and the field of view is shown as two slanted blue lines. Almost everything between those two blue lines is within the range of the camera and visible within the window. ( But not quite: The range of a perspective camera is actually described by a square frustum. which is a four-sided pyramid with the top shaved off. The `Camera` class defines two properties named `NearClip` and `FarClip` that define a range of distance that is visible to the camera. By default these properties have values of 0.1 and 1000. In most normal cases, you don’t have to worry about these values, but they’re necessary for the internal camera math to work.)
 
 The diagram above shows the default `Fov` property value of 45 degrees. If you increase the field of view, a larger range becomes visible to the camera. It’s similar to zooming out. You can zoom into a scene by decreasing the field of view.
 
-To quantify the relationship between the distance of an object from the camera and its visual size within the window, draw a line that bisects the Z axis, and label it W for `width`. The distance from that line to the camera is labeled D for *distance*:
+Graphics objects in the window are rendered so that the height of the window corresponds to the field of view. The width of the window might be the same as the height, less than the height, or greater than the height, which might correspond to the same field of view, or a a lower field of view, or a greater field of view. The ratio of the window’s width to the its height is available as the `AspectRatio` property of the camera.
+
+To quantify the relationship between the distance of an object from the camera and its visual size within the window, draw a line that bisects the Z axis, and label it H for *height*. The distance from that line to the camera is labeled D for *distance*:
 
 ![Camera Distance and Width](Figure4.png)
 
 Now you’ve defined two similar triangles, and it becomes a problem in trigonometry:
 
-tan(FOV / 2) = (W / 2) / D
+tan(FOV / 2) = (H / 2) / D
 
 or:
 
-W = 2D tan (FOV / 2)
+H = 2D tan (FOV / 2)
 
-For example, suppose a 3D object is 5 units from the camera. How wide would the object need to be to occupy the full width of the window? If FOV is 45 degrees, the tanget of 22.5 degrees is 0.414, and W equals 4.14 units.
+For example, suppose a 3D object is 5 units from the camera. How tall would the object need to be to occupy the full height of the window? If FOV is 45 degrees, the tanget of 22.5 degrees is 0.414, and H equals 4.14 units.
 
 The dimension of the `Box` object is a unit square: 1 unit by 1 unit by 1 unit. The value of the `Position` property corresponds to the center of the `Box`. To position the front of the `Box` five units from the camera, the Z coordinate of the `Position` property must be set to 5.5.
 
-To position the box precisely in the upper-right corner of the window, the X and Y coordinates of the `Position` property must be set to half of W (2.07) minus 0.5:
+To position the box precisely in the upper-right corner of the window, the X and Y coordinates of the `Position` property must be set to 0.5 units less than half the width and half the height of the window. The following code cell performs this calculation. Notice the Urho `MathHelper.DegreesToRadians` call for converting the angle in degrees to radians for the `Math.Tan` function:
 
 ```csharp
 float D = 5.0f;
 float FOV = app.Camera.Fov;
-float y = 2 * D * (float)Math.Tan(MathHelper.DegreesToRadian(FOV / 2) / 2;
+float y = 2 * D * (float)Math.Tan(MathHelper.DegreesToRadians(FOV / 2)) / 2;
 float x = app.Camera.AspectRatio * y;
 
-boxNode.Position = new Vector3(x - 0.5f, t - 0.5f, D + 0.5f);
+boxNode.Position = new Vector3(x - 0.5f, y - 0.5f, D + 0.5f);
 ```
 
-This works on the PC but not the Mac. The `SimpleApplication.RunAsync` call that created the Urho window towards the beginning of this workbook specified square dimensions, but the window on a Mac is actually a big wider that the height.
-
-If you specify a window size that is not square, the translation of 3D coordinates to the 2D coordinates of the window is based on the *height* of the window. Regardless of the window’s aspect ratio, setting the position shown in the code cell above positions the `Box` object against the top edge of the window. However, the `Box` will be to the left of the right edge of the window if the window has a landscape aspect ratio (as is the case for the Mac), and will be partially (or entirely) outside the window for a portrait aspect ratio.
+Regardless of the window size (set in the `SimpleApplication.RunAsync` call) and the camera field of view, the box should be positioned in the upper-right corner of the window.
 
 ## Exploring Shapes
 
@@ -236,7 +232,7 @@ Node shapeNode = mainNode.CreateChild("shapeNode");
 Shape shape = shapeNode.CreateComponent<Torus>();
 ```
 
-Now that’s interesting! The camera is sitting in the middle of the torus (the donut hole) and part of the torus is visible from that perspective.
+Now that’s interesting! The camera is sitting in the middle of the torus (where the hole of the donut is) and part of the torus is visible from that perspective.
 
 To see the whole torus, you can change its position (as with the box) but another solution is to change the position of the camera. This statement moves the camera back along the negative Z axis, as well as moving it to the left and up:
 
@@ -244,9 +240,9 @@ To see the whole torus, you can change its position (as with the box) but anothe
 app.CameraNode.Position = new Vector3(-1, 1.5f, -6);
 ```
 
-After running that code, you might have expected the torus to remain in the center of the screen. But keep in mind that the camera is still pointed in the positive Z direction. To position the torus in the center of the screen, the camera must be pointed at the origin of the coordinate system.
+After running that code, you might have expected the torus to remain in the center of the screen. But keep in mind that the camera is still pointed in the positive Z direction. To position the torus in the center of the screen, the camera must be pointed at the torus, which is the origin of the coordinate system.
 
-Pointing the camera at the origin is actually easier than it might seem. The vector that points from position to another is the difference between the coordinates. You can calculate the vector that points from the camera to the origin by subtracting the camera position from the origin, which is the point (0, 0, 0). This is equivalent to the negative of the camera position:
+Pointing the camera at the origin is actually easier than it might seem. The vector that points from one position to another position is the difference between the coordinates. You can calculate the vector that points from the camera to the origin by subtracting the camera position from the origin. This is equivalent to the negative of the camera position:
 
 ```csharp
 app.CameraNode.SetDirection(-app.CameraNode.Position);
@@ -289,7 +285,7 @@ Node cylinderNode = mainNode.CreateChild("cylinderNode");
 Cylinder cylinder = cylinderNode.CreateComponent<Cylinder>();
 ```
 
-The cylinder is one unit tall and has a one unit diameter. But what do you do you want a cylinder of a different size or proportions? Or perhaps you need to tip it over so that the ends are parallel to the YZ plane rather than the XZ plane.
+The cylinder is one unit tall and has a one unit diameter. But what if you want a cylinder of a different size or proportions? Or perhaps you need to tip it over so that the ends are parallel to the YZ plane rather than the XZ plane.
 
 These are jobs for graphics *transforms*, of which there are three basic types:
 
@@ -317,21 +313,21 @@ Similarly, the `ScaleNode` method is accumulative but the `SetScale` method is n
 
 Transforms can often be difficult to understand, and rotations in particular can be very complex. This discussion is intended as a brief introduction.
 
-The default `Scale` property is the `Vector3` value (1, 1, 1). You can control the scaling factors on all three dimensions independently. Set them to values greater than 1 to increase the size. For example, the value 2 doubles the size in that dimension. Set them to values less than 1 to decrease the size.
+The default `Scale` property is the `Vector3` value (1, 1, 1). You can control the scaling factors on all three dimensions independently. Set them to values greater than 1 to increase the size. For example, a value of 2 doubles the size in that dimension. Set them to values less than 1 to decrease the size.
 
-For example, suppose you want to make the cylinder skinnier but double the length:
+For example, suppose you want to make the cylinder skinnier but half but with double the length:
 
 ```csharp
-cylinderNode.Scale = new Vector3(0.1f, 2, 0.1f);
+cylinderNode.Scale = new Vector3(0.5f, 2, 0.5f);
 ```
 
 It’s necessary to set the X and Z scaling factors to the same values if you want to keep the cylinder round, but nothing prevents you from setting them to different values for an elliptical cylindar.
 
 Watch out: The default `Scale` property is (1, 1, 1) and not (0, 0, 0). If you set `Scale` to (0, 0, 0), the object will disappear.
 
-Rotations in three dimensions is an exceptionally complex topic, which you might have discerned from the type of the `Rotation` property being the `Quaternion` structure. A quaternion is indeed a mathematical descripton of a 3D rotation that is difficult to grasp intuitively, mostly because it involves three different types of imaginary numbers. The big advantage of quaternions in 3D computer graphics is that they interpolate well, and lend themselves to smooth animations.
+Three-dimensional rotation is an exceptionally complex topic, which you might have discerned from the type of the `Rotation` property being the `Quaternion` structure. A quaternion is a mathematical descripton of a 3D rotation and can be difficult to grasp intuitively, mostly because it involves three different types of imaginary numbers. The big advantage of quaternions in 3D computer graphics is that they interpolate well, which results in smooth animations.
 
-Fortunately, there are simpler ways to describe 3D rotation. Perhaps easiest to visualize is the axis-angle rotation. You specify an axis, for instance, the X axis which has a value of (1, 0, 0), and specify a rotational angle around that axis. A simple static method converts that rotation into a Quaternion value.
+Fortunately, there are simpler ways to describe 3D rotation. Perhaps easiest to visualize is the axis-angle rotation. You specify an axis, for instance, the X axis which has a value of (1, 0, 0), and a rotational angle around that axis. A simple static method converts that rotation into a `Quaternion` value.
 
 Often you’ll want to rotate something around the X, Y, or Z axis. The `Vector3` structure defines three static readonly fields named `UnitX`, `UnitY`, and `UnitZ` which equal (1, 0, 0), (0, 1, 0), and (0, 0, 1), respectively. Here’s how to rotate the cylinder 45 degrees around the Z axis:
 
@@ -339,7 +335,7 @@ Often you’ll want to rotate something around the X, Y, or Z axis. The `Vector3
 cylinderNode.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45);
 ```
 
-You can predict the direction of rotation for positive angles from another left hand rule: Point the thumb of your left hand in the direction of the axis of rotation (in this case the postive Z axis). The fingers of your hand curl in the direction of positive rotation angles.  You can change the direction by changing the sign of the rotation angle, or the direction of the axis.
+You can predict the direction of rotation from another left hand rule: Point the thumb of your left hand in the direction of the axis of rotation (in this case the postive Z axis). The other fingers of your left hand curl in the direction of positive rotation angles.  You can change the direction by changing the sign of the rotation angle, or the direction of the axis.
 
 You can now set the `Position` property to shift the cylinder so the bottom end is at the origin:
 
@@ -355,7 +351,7 @@ cylinderNode.Position = new Vector3(-0.707f, 0.707f, 12);
 
 ## Displaying the Axes
 
-The manipulation of the cylinder suggests that thin cylinders might be used to draw some rudimentary straight lines in 3D space. Here’s a function that accepts a `Node` argument and creates 60 subnodes to  draw the axes of the 3D coordinate system. Each cylinder is scaled to a size of (0.025, 0.90, 0.25) and 10 each are stacked in the positive and negative X, Y, and Z directions:
+Very thin cylinders can be used to draw some rudimentary straight lines in 3D space. Here’s a function that accepts a `Node` argument and creates 60 subnodes to  draw the axes of the 3D coordinate system. Each cylinder is scaled to a size of (0.025, 0.90, 0.25) and 10 each are stacked in the positive and negative X, Y, and Z directions:
 
 ```csharp
 void CreateAxes(Node axesNode)
@@ -386,9 +382,9 @@ void CreateAxes(Node axesNode)
 }
 ```
 
-Very little in this function should be new. The `CastShadows` property of the `Cylinder` is set to false; this prevents the axes from casting shadows on other objects. Also, notice how the `Position` property of each `Node` is set: The `Vector3` structure supports multiplication of a vector by a number, often called a scalar in this context.  The number is multiplied by all three components of the vector, but in this case two of them are zero.
+Very little in this function should be new. The `CastShadows` property of the `Cylinder` is set to `false`; this prevents the axes from casting shadows on other objects. Also, notice how the `Position` property of each `Node` is set: The `Vector3` structure supports multiplication of a vector by a number, often called a *scalar* in this context.  The number is multiplied by all three components of the vector, but in this case two of them are zero.
 
-To render these axes, create a child node and pass it to the CreateAxes function:
+To render these axes, create a child node and pass it to the `CreateAxes` function:
 
 ```csharp
 // Remove node named "axesNode" so there are no duplicates
@@ -407,4 +403,4 @@ boxNode.Position = new Vector3(0.5f, 0.5f, 0.5f);
 
 There’s nothing that prevents multiple 3D objects from occupying the same space. Only unobscured surfaces are rendered, so if part of one 3D object is inside another, the hidden surfaces are simply not drawn. The box hides a quarter sliver of each of the three cylinders that it abuts.
 
-This workbook has introduced you to the Urho 3D coordinate system, and the best way to get more familiar with it is by experimentation with these shapes and by creating others.
+This workbook has introduced you to the Urho 3D coordinate system, but the best way to get more familiar with it is by experimentation with these shapes and by creating others.
