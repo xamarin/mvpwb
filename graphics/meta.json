@@ -2,6 +2,6 @@
   "order":{
     "skiasharp":"SkiaSharp",
     "urhosharp":"UrhoSharp",
-    "tinyrenderer":"TinyRenderer"
+    "tiny-renderer":"TinyRenderer"
   }
 }
