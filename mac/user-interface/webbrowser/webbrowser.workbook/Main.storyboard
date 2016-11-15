@@ -622,6 +622,9 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="goButtonClicked:" target="rPt-NT-nkU" id="3mz-tK-oDy"/>
+                                        </connections>
                                     </button>
                                     <segmentedControl identifier="HistoryButtons" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3ey-PG-JqD">
                                         <rect key="frame" x="12" y="10" width="71" height="23"/>
@@ -636,6 +639,9 @@
                                                 <segment image="ArrowForward.png" width="32" enabled="NO" tag="1"/>
                                             </segments>
                                         </segmentedCell>
+                                        <connections>
+                                            <action selector="historyButtonClicked:" target="rPt-NT-nkU" id="Aop-Sz-fPQ"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                                 <constraints>
