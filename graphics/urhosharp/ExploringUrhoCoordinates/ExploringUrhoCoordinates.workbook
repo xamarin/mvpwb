@@ -1,4 +1,4 @@
----
+﻿---
 uti: com.xamarin.workbook
 platforms:
 - WPF
@@ -35,7 +35,7 @@ SimpleApplication app = await SimpleApplication.RunAsync(1000, 1000);
 app.Input.SetMouseVisible(true, true);
 ```
 
-You should see a window appear on the desktop as the `RunAsync` method completes. The `SetMouseVisible` call ensures that the UrhoSharp window doesn’t take total control of the mouse cursor and make it invisible.
+You should see a window appear on the desktop as the `RunAsync` method completes. On Windows, the content area of the window is square as the dimensions suggest. On the Mac, the width is about 140% of the height. The `SetMouseVisible` call ensures that the UrhoSharp window doesn’t take total control of the mouse cursor and make it invisible.
 
 ## Inside SimpleApplication
 
