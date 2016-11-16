@@ -1,7 +1,7 @@
 Workbooks (MVP Summit)
 ============
 
-
+The content from this repo is now available at [https://github.com/xamarin/Workbooks](https://github.com/xamarin/Workbooks) or visit [developer.xamarin.com/workbooks](https://developer.xamarin.com/workbooks).
 
 License
 -------
