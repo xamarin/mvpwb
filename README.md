@@ -1,6 +1,8 @@
 Workbooks (MVP Summit)
 ============
 
+## Content has been migrated to [github.com/xamarin/Workbooks](https://github.com/xamarin/Workbooks)
+
 
 
 License
